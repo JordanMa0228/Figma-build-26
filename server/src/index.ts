@@ -12,6 +12,10 @@ const app = express();
 // Must convert to Number and bind to 0.0.0.0 for Railway containers
 const PORT = Number(process.env.PORT) || 8080;
 
+// Trust Railway's reverse proxy so that express-rate-limit can correctly
+// identify client IPs from the X-Forwarded-For header.
+app.set('trust proxy', 1);
+
 // CORS: allow local dev frontend + production frontend on Netlify
 const allowedOrigins = [
   'http://localhost:5173',
