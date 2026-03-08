@@ -1,0 +1,9 @@
+# 后端代码 — 后端同学负责 review
+/server/ @JordanMa0228
+
+# 前端代码 — 前端同学负责 review  
+/src/ @JordanMa0228
+
+# 配置文件 — 任何人改都需要 review
+/.github/ @JordanMa0228
+/package.json @JordanMa0228
