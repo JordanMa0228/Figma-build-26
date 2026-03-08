@@ -104,6 +104,105 @@ router.get('/summary', sessionsLimiter, authenticateToken, async (req: AuthReque
   }
 });
 
+// GET /api/sessions/analytics — aggregated analytics for the current user
+router.get('/analytics', sessionsLimiter, authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const allSessions = await prisma.session.findMany({
+      where: { userId },
+      include: { report: true },
+    });
+
+    // weeklyFlowData: last 7 days grouped by weekday (Mon–Sun)
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const weeklyFlowMap: Record<string, number> = {};
+    days.forEach(d => { weeklyFlowMap[d] = 0; });
+    const now = new Date();
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setDate(now.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+    for (const s of allSessions) {
+      const sessionDate = new Date(s.date);
+      if (sessionDate >= sevenDaysAgo) {
+        const jsDay = sessionDate.getDay(); // 0=Sun
+        const dayLabel = days[(jsDay + 6) % 7];
+        weeklyFlowMap[dayLabel] += Math.round(s.durationMin * s.flowRatio);
+      }
+    }
+    const weeklyFlowData = days.map(day => ({ day, flowMin: weeklyFlowMap[day] }));
+
+    // avgSTRByTask: group all sessions by taskLabel, average avgStr
+    const taskMap: Record<string, { sum: number; count: number }> = {};
+    for (const s of allSessions) {
+      const label = s.taskLabel || 'Other';
+      if (!taskMap[label]) taskMap[label] = { sum: 0, count: 0 };
+      taskMap[label].sum += s.avgStr;
+      taskMap[label].count += 1;
+    }
+    const avgSTRByTask = Object.entries(taskMap).map(([task, { sum, count }]) => ({
+      task,
+      avgSTR: parseFloat((sum / count).toFixed(2)),
+    }));
+
+    // focusTimeOfDay: group by hour of startTime from report.summary
+    const periodMap: Record<string, { sum: number; count: number }> = {
+      Morning: { sum: 0, count: 0 },
+      Afternoon: { sum: 0, count: 0 },
+      Evening: { sum: 0, count: 0 },
+      Night: { sum: 0, count: 0 },
+    };
+    for (const s of allSessions) {
+      if (s.report?.summary) {
+        try {
+          const summary = JSON.parse(s.report.summary);
+          if (summary.startTime) {
+            const hour = new Date(summary.startTime).getHours();
+            const flowMin = Math.round(s.durationMin * s.flowRatio);
+            let period: string;
+            if (hour >= 6 && hour < 12) period = 'Morning';
+            else if (hour >= 12 && hour < 18) period = 'Afternoon';
+            else if (hour >= 18 && hour < 22) period = 'Evening';
+            else period = 'Night';
+            periodMap[period].sum += flowMin;
+            periodMap[period].count += 1;
+          }
+        } catch {
+          // ignore parse errors
+        }
+      }
+    }
+    const focusTimeOfDay = Object.entries(periodMap).map(([period, { sum, count }]) => ({
+      period,
+      avgFlow: count > 0 ? Math.round(sum / count) : 0,
+    }));
+
+    // analyticsOverview
+    const totalSessions = allSessions.length;
+    const avgFlowRatio =
+      totalSessions > 0
+        ? parseFloat((allSessions.reduce((sum, s) => sum + s.flowRatio, 0) / totalSessions).toFixed(2))
+        : 0;
+    const avgSTR =
+      totalSessions > 0
+        ? parseFloat((allSessions.reduce((sum, s) => sum + s.avgStr, 0) / totalSessions).toFixed(2))
+        : 0;
+    const bestTaskType =
+      avgSTRByTask.length > 0
+        ? avgSTRByTask.reduce((best, cur) => (cur.avgSTR > best.avgSTR ? cur : best)).task
+        : '';
+
+    res.json({
+      weeklyFlowData,
+      avgSTRByTask,
+      focusTimeOfDay,
+      analyticsOverview: { totalSessions, avgFlowRatio, avgSTR, bestTaskType },
+    });
+  } catch (error) {
+    console.error('Error fetching analytics:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // GET /api/sessions/:id — get a single session by id
 router.get('/:id', sessionsLimiter, authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
   try {

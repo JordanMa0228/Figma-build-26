@@ -13,6 +13,7 @@ model User {
   name      String
   password  String
   timezone  String    @default("UTC")
+  settings  String?   @default("{}")
   sessions  Session[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
