@@ -104,6 +104,123 @@ router.get('/summary', sessionsLimiter, authenticateToken, async (req: AuthReque
   }
 });
 
+// GET /api/sessions/analytics — analytics data for the current user
+// IMPORTANT: must come before /:id to avoid route shadowing
+router.get('/analytics', sessionsLimiter, authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!.id;
+    const allSessions = await prisma.session.findMany({
+      where: { userId },
+      include: { report: true },
+    });
+
+    const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const ORDERED_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    // Compute weeklyFlowData: last 7 days grouped by weekday
+    const now = new Date();
+    const sevenDaysAgo = new Date(now);
+    sevenDaysAgo.setDate(now.getDate() - 6);
+    sevenDaysAgo.setHours(0, 0, 0, 0);
+    const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+
+    const recentSessions = allSessions.filter(s => s.date >= sevenDaysAgoStr);
+    const flowByDay: Record<string, number> = {};
+    ORDERED_DAYS.forEach(d => { flowByDay[d] = 0; });
+    for (const s of recentSessions) {
+      const dateObj = new Date(s.date + 'T12:00:00Z');
+      const dayName = DAY_NAMES[dateObj.getUTCDay()];
+      flowByDay[dayName] = (flowByDay[dayName] || 0) + Math.round(s.durationMin * s.flowRatio);
+    }
+    const weeklyFlowData = ORDERED_DAYS.map(day => ({ day, flowMin: flowByDay[day] }));
+
+    // Compute avgSTRByTask: group all sessions by taskLabel, average avgStr
+    const strByTask: Record<string, { total: number; count: number }> = {};
+    for (const s of allSessions) {
+      const task = s.taskLabel || 'Other';
+      if (!strByTask[task]) strByTask[task] = { total: 0, count: 0 };
+      strByTask[task].total += s.avgStr;
+      strByTask[task].count += 1;
+    }
+    const avgSTRByTask = Object.entries(strByTask).map(([task, { total, count }]) => ({
+      task,
+      avgSTR: parseFloat((total / count).toFixed(3)),
+    }));
+
+    // Compute focusTimeOfDay: group by startTime from report.summary
+    const PERIOD_ORDER = ['Morning', 'Afternoon', 'Evening', 'Night'];
+    const flowByPeriod: Record<string, { total: number; count: number }> = {
+      Morning: { total: 0, count: 0 },
+      Afternoon: { total: 0, count: 0 },
+      Evening: { total: 0, count: 0 },
+      Night: { total: 0, count: 0 },
+    };
+    for (const s of allSessions) {
+      if (s.report?.summary) {
+        try {
+          const summary = JSON.parse(s.report.summary);
+          if (summary.startTime) {
+            const hour = parseInt(summary.startTime.split(':')[0], 10);
+            let period: string;
+            if (hour >= 6 && hour < 12) period = 'Morning';
+            else if (hour >= 12 && hour < 18) period = 'Afternoon';
+            else if (hour >= 18 && hour < 22) period = 'Evening';
+            else period = 'Night';
+            const flowMin = Math.round(s.durationMin * s.flowRatio);
+            flowByPeriod[period].total += flowMin;
+            flowByPeriod[period].count += 1;
+          }
+        } catch {
+          // ignore parse errors
+        }
+      }
+    }
+    const focusTimeOfDay = PERIOD_ORDER.map(period => ({
+      period,
+      avgFlow: flowByPeriod[period].count > 0
+        ? Math.round(flowByPeriod[period].total / flowByPeriod[period].count)
+        : 0,
+    }));
+
+    // Compute analyticsOverview
+    const totalSessions = allSessions.length;
+    const avgFlowRatio = totalSessions > 0
+      ? parseFloat((allSessions.reduce((sum, s) => sum + s.flowRatio, 0) / totalSessions).toFixed(3))
+      : 0;
+    const avgSTR = totalSessions > 0
+      ? parseFloat((allSessions.reduce((sum, s) => sum + s.avgStr, 0) / totalSessions).toFixed(3))
+      : 0;
+
+    // bestTaskType: taskLabel with highest average flowRatio
+    const flowByTask: Record<string, { total: number; count: number }> = {};
+    for (const s of allSessions) {
+      const task = s.taskLabel || 'Other';
+      if (!flowByTask[task]) flowByTask[task] = { total: 0, count: 0 };
+      flowByTask[task].total += s.flowRatio;
+      flowByTask[task].count += 1;
+    }
+    let bestTaskType = '';
+    let bestFlowRatio = -1;
+    for (const [task, { total, count }] of Object.entries(flowByTask)) {
+      const avg = total / count;
+      if (avg > bestFlowRatio) {
+        bestFlowRatio = avg;
+        bestTaskType = task;
+      }
+    }
+
+    res.json({
+      weeklyFlowData,
+      avgSTRByTask,
+      focusTimeOfDay,
+      analyticsOverview: { totalSessions, avgFlowRatio, avgSTR, bestTaskType },
+    });
+  } catch (error) {
+    console.error('Error fetching analytics:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // GET /api/sessions/:id — get a single session by id
 router.get('/:id', sessionsLimiter, authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
   try {

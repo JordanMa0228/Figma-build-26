@@ -95,3 +95,12 @@ export async function deleteSession(id) {
   if (!res.ok) throw Object.assign(new Error('Failed to delete session'), { status: res.status })
   return res.json()
 }
+
+/** GET /api/sessions/analytics — returns analytics data */
+export async function fetchSessionAnalytics() {
+  const res = await fetch(`${BASE_URL}/api/sessions/analytics`, {
+    headers: authHeaders(),
+  })
+  if (!res.ok) throw Object.assign(new Error('Failed to fetch analytics'), { status: res.status })
+  return res.json()
+}
