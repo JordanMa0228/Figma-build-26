@@ -1,5 +1,7 @@
-import { respond, readStorage, writeStorage } from '../../lib/mock-server'
+import { api } from '../../lib/api-client'
+import { readStorage, writeStorage } from '../../lib/mock-server'
 import type { SettingsPayload } from '../../types/api'
+import type { ApiSuccess } from '../../types/api'
 import type { SettingsFormValues } from '../../types/domain'
 
 const storageKey = 'flowsense.settings'
@@ -17,13 +19,26 @@ export const defaultSettings: SettingsFormValues = {
   allowAnonTraining: false,
 }
 
-export async function getSettings() {
-  const settings = readStorage<SettingsFormValues>(storageKey, defaultSettings)
-  return respond<SettingsPayload>({ settings })
+export async function getSettings(): Promise<ApiSuccess<SettingsPayload>> {
+  try {
+    const res = await api.get<SettingsPayload>('/users/settings')
+    const settings = res.data.settings && Object.keys(res.data.settings).length > 0
+      ? res.data.settings
+      : readStorage<SettingsFormValues>(storageKey, defaultSettings)
+    return { success: true, data: { settings } }
+  } catch {
+    const settings = readStorage<SettingsFormValues>(storageKey, defaultSettings)
+    return { success: true, data: { settings } }
+  }
 }
 
-export async function saveSettings(nextSettings: SettingsFormValues) {
+export async function saveSettings(nextSettings: SettingsFormValues): Promise<ApiSuccess<SettingsPayload>> {
   writeStorage(storageKey, nextSettings)
-  return respond<SettingsPayload>({ settings: nextSettings }, 260)
+  try {
+    await api.patch('/users/settings', nextSettings)
+  } catch {
+    // fall back to localStorage only if request fails
+  }
+  return { success: true, data: { settings: nextSettings } }
 }
 

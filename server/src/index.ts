@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
 import sessionRoutes from './routes/sessions';
+import usersRoutes from './routes/users';
 
 dotenv.config();
 
@@ -71,6 +72,7 @@ app.get('/api/health', (_req, res) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/sessions', sessionRoutes);
+app.use('/api/users', usersRoutes);
 
 // 404 handler
 app.use((_req, res) => {
