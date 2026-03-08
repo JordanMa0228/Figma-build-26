@@ -1,20 +1,87 @@
-import { useState } from 'react'
-import { GitCompare } from 'lucide-react'
-import { sessions } from '../data/mockData'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { GitCompare, Loader2 } from 'lucide-react'
+import { fetchSessions } from '../api/sessions'
 import FlowTimeline from '../components/FlowTimeline'
 import STRChart from '../components/STRChart'
 import SummaryCard from '../components/SummaryCard'
 
 export default function Compare() {
-  const [sessionAId, setSessionAId] = useState(sessions[0].id)
-  const [sessionBId, setSessionBId] = useState(sessions[1].id)
+  const navigate = useNavigate()
+  const [sessions, setSessions] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [sessionAId, setSessionAId] = useState(null)
+  const [sessionBId, setSessionBId] = useState(null)
+
+  useEffect(() => {
+    let cancelled = false
+    async function loadSessions() {
+      try {
+        const data = await fetchSessions()
+        if (!cancelled) {
+          setSessions(data)
+          if (data.length >= 1) setSessionAId(data[0].id)
+          if (data.length >= 2) setSessionBId(data[1].id)
+        }
+      } catch (err) {
+        if (!cancelled) {
+          if (err.status === 401 || err.status === 403) {
+            navigate('/login')
+          } else {
+            setError('Failed to load sessions. Please try again.')
+          }
+        }
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    loadSessions()
+    return () => { cancelled = true }
+  }, [navigate])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 size={32} className="text-purple-400 animate-spin" />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-slate-400">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 text-purple-400 hover:text-purple-300 text-sm"
+        >
+          Retry
+        </button>
+      </div>
+    )
+  }
+
+  if (sessions.length < 2) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-slate-400">You need at least 2 sessions to compare.</p>
+        <button
+          onClick={() => navigate('/')}
+          className="mt-4 text-purple-400 hover:text-purple-300 text-sm"
+        >
+          Start a Session
+        </button>
+      </div>
+    )
+  }
 
   const sessionA = sessions.find(s => s.id === sessionAId)
   const sessionB = sessions.find(s => s.id === sessionBId)
 
   const SelectSession = ({ value, onChange, exclude }) => (
     <select
-      value={value}
+      value={value || ''}
       onChange={e => onChange(e.target.value)}
       className="w-full bg-slate-700 border border-slate-600 text-slate-200 text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500"
     >
@@ -77,14 +144,16 @@ export default function Compare() {
       </div>
 
       {/* Side by Side Comparison */}
-      <div className="flex gap-4">
-        <CompareSection session={sessionA} />
-        <div className="flex items-start pt-16">
-          <div className="w-px bg-slate-700 self-stretch" />
-          <GitCompare size={16} className="text-slate-600 -ml-2 mt-2 bg-slate-900 rounded-full" />
+      {sessionA && sessionB && (
+        <div className="flex gap-4">
+          <CompareSection session={sessionA} />
+          <div className="flex items-start pt-16">
+            <div className="w-px bg-slate-700 self-stretch" />
+            <GitCompare size={16} className="text-slate-600 -ml-2 mt-2 bg-slate-900 rounded-full" />
+          </div>
+          <CompareSection session={sessionB} />
         </div>
-        <CompareSection session={sessionB} />
-      </div>
+      )}
     </div>
   )
 }

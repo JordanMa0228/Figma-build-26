@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Eye, Brain, Heart, Download, Cloud, HardDrive, CheckCircle2 } from 'lucide-react'
+import { getSettings, saveSettings } from '../api/users'
 
 export default function Settings() {
   const [sensors, setSensors] = useState({ eye: true, eeg: true, hr: true })
@@ -7,6 +8,31 @@ export default function Settings() {
   const [flowSensitivity, setFlowSensitivity] = useState('Balanced')
   const [cloudSync, setCloudSync] = useState(false)
   const [exported, setExported] = useState(false)
+  const [saveError, setSaveError] = useState(false)
+  const initialized = useRef(false)
+
+  // Load settings on mount
+  useEffect(() => {
+    getSettings().then(s => {
+      if (s.sensors) setSensors(s.sensors)
+      if (s.qualityThreshold !== undefined) setQualityThreshold(s.qualityThreshold)
+      if (s.flowSensitivity) setFlowSensitivity(s.flowSensitivity)
+      if (s.cloudSync !== undefined) setCloudSync(s.cloudSync)
+      initialized.current = true
+    }).catch(() => {
+      initialized.current = true
+    })
+  }, [])
+
+  // Persist settings whenever they change (after initialization)
+  useEffect(() => {
+    if (!initialized.current) return
+    saveSettings({ sensors, qualityThreshold, flowSensitivity, cloudSync }).catch(err => {
+      console.warn('Failed to save settings to server:', err)
+      setSaveError(true)
+      setTimeout(() => setSaveError(false), 3000)
+    })
+  }, [sensors, qualityThreshold, flowSensitivity, cloudSync])
 
   const handleExport = () => {
     setExported(true)
@@ -28,6 +54,12 @@ export default function Settings() {
         <h1 className="text-2xl font-bold text-white">Settings</h1>
         <p className="text-sm text-slate-400 mt-1">Configure your FlowSense experience</p>
       </div>
+
+      {saveError && (
+        <div className="bg-red-900/40 border border-red-500/40 rounded-xl px-4 py-2 text-sm text-red-400">
+          Settings could not be saved to the server. Your changes are saved locally.
+        </div>
+      )}
 
       {/* Sensor Permissions */}
       <div className="bg-slate-800 border border-slate-700 rounded-2xl p-5">
