@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Tag } from 'lucide-react'
+import { ArrowLeft, Tag, Loader2 } from 'lucide-react'
 import { format } from 'date-fns'
-import { sessions } from '../data/mockData'
+import { fetchSessionById } from '../api/sessions'
 import FlowTimeline from '../components/FlowTimeline'
 import STRChart from '../components/STRChart'
 import SummaryCard from '../components/SummaryCard'
@@ -15,11 +15,54 @@ const TASK_ICONS = { Coding: '💻', Poker: '🃏', Class: '📚', Music: '🎵'
 export default function SessionDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const session = sessions.find(s => s.id === id)
+  const [session, setSession] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [activeAnnotations, setActiveAnnotations] = useState([])
-  const [taskLabel, setTaskLabel] = useState(session?.taskLabel || 'Coding')
+  const [taskLabel, setTaskLabel] = useState('Coding')
 
-  if (!session) {
+  useEffect(() => {
+    let cancelled = false
+    async function loadSession() {
+      try {
+        const data = await fetchSessionById(id)
+        if (!cancelled) {
+          setSession(data)
+          setTaskLabel(data.taskLabel || 'Coding')
+        }
+      } catch (err) {
+        if (!cancelled) {
+          if (err.status === 401 || err.status === 403) {
+            navigate('/login')
+          } else if (err.status === 404) {
+            setError('not-found')
+          } else {
+            setError('error')
+          }
+        }
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    loadSession()
+    return () => { cancelled = true }
+  }, [id, navigate])
+
+  const toggleAnnotation = (tag) => {
+    setActiveAnnotations(prev =>
+      prev.includes(tag) ? prev.filter(a => a !== tag) : [...prev, tag]
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 size={32} className="text-purple-400 animate-spin" />
+      </div>
+    )
+  }
+
+  if (error === 'not-found' || !session) {
     return (
       <div className="text-center py-20">
         <p className="text-slate-400">Session not found.</p>
@@ -30,9 +73,14 @@ export default function SessionDetail() {
     )
   }
 
-  const toggleAnnotation = (tag) => {
-    setActiveAnnotations(prev =>
-      prev.includes(tag) ? prev.filter(a => a !== tag) : [...prev, tag]
+  if (error) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-slate-400">Failed to load session.</p>
+        <button onClick={() => navigate('/sessions')} className="mt-4 text-purple-400 hover:text-purple-300 text-sm">
+          ← Back to Sessions
+        </button>
+      </div>
     )
   }
 
@@ -52,7 +100,8 @@ export default function SessionDetail() {
             <div>
               <h1 className="text-2xl font-bold text-white">{taskLabel}</h1>
               <p className="text-sm text-slate-400">
-                {format(new Date(session.date), 'EEEE, MMMM d, yyyy')} · {session.startTime}–{session.endTime}
+                {format(new Date(session.date), 'EEEE, MMMM d, yyyy')}
+                {session.startTime && session.endTime ? ` · ${session.startTime}–${session.endTime}` : ''}
               </p>
               <p className="text-xs text-slate-500 mt-0.5">{session.durationMin} minutes total</p>
             </div>
@@ -97,7 +146,7 @@ export default function SessionDetail() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <SummaryCard
           label="Flow Time"
-          value={`${Math.round(session.durationMin * session.flowPercent / 100)} min`}
+          value={`${Math.round(session.durationMin * session.flowRatio)} min`}
           sub={`${session.flowPercent}% of session`}
           accent="purple"
         />
