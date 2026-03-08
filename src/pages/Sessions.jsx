@@ -1,12 +1,23 @@
-import { useState } from 'react'
-import { Filter } from 'lucide-react'
-import { sessions } from '../data/mockData'
+import { useState, useEffect } from 'react'
+import { Filter, Loader2 } from 'lucide-react'
+import { api } from '../api/client'
+import { mapSession } from '../utils/mapSession'
 import SessionCard from '../components/SessionCard'
 
 const TASK_TYPES = ['All', 'Coding', 'Poker', 'Class', 'Music', 'Email']
 
 export default function Sessions() {
   const [filterTask, setFilterTask] = useState('All')
+  const [sessions, setSessions] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    api.getSessions()
+      .then(data => setSessions(data.map(mapSession)))
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [])
 
   const filtered = filterTask === 'All'
     ? sessions
@@ -38,17 +49,29 @@ export default function Sessions() {
       </div>
 
       {/* Sessions List */}
-      <div className="space-y-3">
-        {filtered.length === 0 ? (
-          <p className="text-slate-500 text-sm py-8 text-center">No sessions found.</p>
-        ) : (
-          filtered.map(session => (
-            <SessionCard key={session.id} session={session} />
-          ))
-        )}
-      </div>
+      {loading ? (
+        <div className="py-16 flex justify-center">
+          <Loader2 size={32} className="text-purple-400 animate-spin" />
+        </div>
+      ) : error ? (
+        <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">
+          {error}
+        </p>
+      ) : (
+        <div className="space-y-3">
+          {filtered.length === 0 ? (
+            <p className="text-slate-500 text-sm py-8 text-center">No sessions found.</p>
+          ) : (
+            filtered.map(session => (
+              <SessionCard key={session.id} session={session} />
+            ))
+          )}
+        </div>
+      )}
 
-      <p className="text-xs text-slate-600 text-center">{filtered.length} session{filtered.length !== 1 ? 's' : ''}</p>
+      {!loading && !error && (
+        <p className="text-xs text-slate-600 text-center">{filtered.length} session{filtered.length !== 1 ? 's' : ''}</p>
+      )}
     </div>
   )
 }

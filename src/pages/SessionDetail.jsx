@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Tag } from 'lucide-react'
+import { ArrowLeft, Tag, Loader2 } from 'lucide-react'
 import { format } from 'date-fns'
-import { sessions } from '../data/mockData'
+import { api } from '../api/client'
+import { mapSession } from '../utils/mapSession'
 import FlowTimeline from '../components/FlowTimeline'
 import STRChart from '../components/STRChart'
 import SummaryCard from '../components/SummaryCard'
@@ -15,14 +16,35 @@ const TASK_ICONS = { Coding: '💻', Poker: '🃏', Class: '📚', Music: '🎵'
 export default function SessionDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const session = sessions.find(s => s.id === id)
+  const [session, setSession] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [activeAnnotations, setActiveAnnotations] = useState([])
-  const [taskLabel, setTaskLabel] = useState(session?.taskLabel || 'Coding')
+  const [taskLabel, setTaskLabel] = useState('Coding')
 
-  if (!session) {
+  useEffect(() => {
+    api.getSession(id)
+      .then(data => {
+        const mapped = mapSession(data)
+        setSession(mapped)
+        setTaskLabel(mapped.taskLabel)
+      })
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="py-20 flex justify-center">
+        <Loader2 size={36} className="text-purple-400 animate-spin" />
+      </div>
+    )
+  }
+
+  if (error || !session) {
     return (
       <div className="text-center py-20">
-        <p className="text-slate-400">Session not found.</p>
+        <p className="text-slate-400">{error || 'Session not found.'}</p>
         <button onClick={() => navigate('/sessions')} className="mt-4 text-purple-400 hover:text-purple-300 text-sm">
           ← Back to Sessions
         </button>

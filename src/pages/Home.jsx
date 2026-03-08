@@ -1,28 +1,79 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Brain, Plus, Clock, Zap, Activity, X, Loader2 } from 'lucide-react'
+import { Brain, Plus, Zap, X, Loader2, LogOut } from 'lucide-react'
 import { format } from 'date-fns'
-import { sessions, todaySummary, weeklyStats } from '../data/mockData'
+import { api } from '../api/client'
+import { useAuth } from '../context/AuthContext'
+import { mapSession } from '../utils/mapSession'
 import SessionCard from '../components/SessionCard'
 import SummaryCard from '../components/SummaryCard'
 
 const TASK_TYPES = ['Coding', 'Poker', 'Class', 'Music', 'Email']
 const TASK_ICONS = { Coding: '💻', Poker: '🃏', Class: '📚', Music: '🎵', Email: '📧' }
 
+function computeSummary(sessions) {
+  if (!sessions.length) {
+    return { lastSessionDate: null, totalFlowTimeMin: 0, avgSTR: 0, longestFlowStreakMin: 0 }
+  }
+  const sorted = [...sessions].sort((a, b) => new Date(b.date) - new Date(a.date))
+  const lastSessionDate = sorted[0].date
+  const totalFlowTimeMin = sessions.reduce((acc, s) => acc + Math.round(s.durationMin * s.flowPercent / 100), 0)
+  const avgSTR = sessions.reduce((acc, s) => acc + (s.avgSTR || 0), 0) / sessions.length
+  const longestFlowStreakMin = Math.max(...sessions.map(s => s.longestFlowStreakMin || 0))
+  return { lastSessionDate, totalFlowTimeMin, avgSTR, longestFlowStreakMin }
+}
+
 export default function Home() {
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
   const [showModal, setShowModal] = useState(false)
   const [taskName, setTaskName] = useState('Coding')
   const [loading, setLoading] = useState(false)
-  const recentSessions = sessions.slice(0, 4)
+  const [sessionError, setSessionError] = useState('')
+  const [sessions, setSessions] = useState([])
+  const [fetchError, setFetchError] = useState('')
 
-  const handleStart = () => {
+  const loadSessions = () => {
+    api.getSessions()
+      .then(data => setSessions(data.map(mapSession)))
+      .catch(err => setFetchError(err.message))
+  }
+
+  useEffect(() => { loadSessions() }, [])
+
+  const handleStart = async () => {
     setLoading(true)
-    setTimeout(() => {
+    setSessionError('')
+    try {
+      const today = new Date().toISOString().split('T')[0]
+      const created = await api.createSession({
+        date: today,
+        durationMin: 30,
+        avgStr: 0.85,
+        flowRatio: 0.6,
+        taskLabel: taskName,
+      })
       setLoading(false)
       setShowModal(false)
-      navigate('/sessions/session-001')
-    }, 3000)
+      loadSessions()
+      navigate(`/sessions/${created.id}`)
+    } catch (err) {
+      setLoading(false)
+      setSessionError(err.message)
+    }
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
+
+  const todaySummary = computeSummary(sessions)
+  const recentSessions = sessions.slice(0, 4)
+  const weeklyStats = {
+    totalSessions: sessions.length,
+    weeklyFlowTimeMin: sessions.reduce((acc, s) => acc + Math.round(s.durationMin * s.flowPercent / 100), 0),
+    avgSTRThisWeek: sessions.length ? sessions.reduce((acc, s) => acc + (s.avgSTR || 0), 0) / sessions.length : 0,
   }
 
   return (
@@ -38,14 +89,29 @@ export default function Home() {
             <p className="text-sm text-slate-400">Understand how you experience time</p>
           </div>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors"
-        >
-          <Plus size={16} />
-          New Session
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+          >
+            <Plus size={16} />
+            New Session
+          </button>
+          <button
+            onClick={handleLogout}
+            title={user?.email}
+            className="flex items-center gap-1.5 text-slate-400 hover:text-slate-200 px-3 py-2 rounded-xl text-sm transition-colors border border-slate-700 hover:border-slate-600"
+          >
+            <LogOut size={15} />
+          </button>
+        </div>
       </div>
+
+      {fetchError && (
+        <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">
+          {fetchError}
+        </p>
+      )}
 
       {/* Today's Summary Card */}
       <div className="bg-gradient-to-br from-purple-900/40 to-slate-800 border border-purple-500/30 rounded-2xl p-5">
@@ -54,7 +120,7 @@ export default function Home() {
           <div>
             <p className="text-xs text-slate-500">Last Session</p>
             <p className="text-sm font-semibold text-slate-200 mt-0.5">
-              {format(new Date(todaySummary.lastSessionDate), 'MMM d')}
+              {todaySummary.lastSessionDate ? format(new Date(todaySummary.lastSessionDate), 'MMM d') : '—'}
             </p>
           </div>
           <div>
@@ -119,7 +185,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg font-bold text-white">Start New Session</h2>
               <button
-                onClick={() => { setShowModal(false); setLoading(false) }}
+                onClick={() => { setShowModal(false); setLoading(false); setSessionError('') }}
                 className="text-slate-400 hover:text-slate-200"
               >
                 <X size={20} />
@@ -153,6 +219,13 @@ export default function Home() {
                     ))}
                   </div>
                 </div>
+
+                {sessionError && (
+                  <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-3 py-2 mb-4">
+                    {sessionError}
+                  </p>
+                )}
+
                 <button
                   onClick={handleStart}
                   className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-medium transition-colors flex items-center justify-center gap-2"

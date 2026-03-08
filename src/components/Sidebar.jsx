@@ -1,5 +1,6 @@
-import { NavLink } from 'react-router-dom'
-import { Brain, LayoutDashboard, Clock, TrendingUp, GitCompare, Settings } from 'lucide-react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { Brain, LayoutDashboard, Clock, TrendingUp, GitCompare, Settings, LogOut } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 
 const navItems = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -10,6 +11,14 @@ const navItems = [
 ]
 
 export default function Sidebar() {
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login')
+  }
+
   return (
     <aside className="hidden md:flex flex-col w-60 bg-slate-800 border-r border-slate-700 min-h-screen">
       <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-700">
@@ -37,9 +46,17 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      <div className="px-6 py-4 border-t border-slate-700">
-        <p className="text-xs text-slate-500">FlowSense v1.0.0</p>
-        <p className="text-xs text-slate-600 mt-0.5">Subjective Time Monitor</p>
+      <div className="px-4 py-4 border-t border-slate-700">
+        {user && (
+          <p className="text-xs text-slate-500 truncate mb-3 px-2">{user.email}</p>
+        )}
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-colors"
+        >
+          <LogOut size={16} />
+          Sign Out
+        </button>
       </div>
     </aside>
   )
