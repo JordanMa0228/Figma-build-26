@@ -17,6 +17,14 @@ interface RawSession {
   } | null
 }
 
+const TASK_ICONS: Record<string, string> = {
+  Coding: '💻',
+  Poker: '🃏',
+  Class: '📚',
+  Music: '🎵',
+  Email: '📧',
+}
+
 function mapSession(raw: RawSession): SessionRecord {
   let flowTimeline: FlowSegment[] = []
   let strTimeseries: StrPoint[] = []
@@ -42,7 +50,7 @@ function mapSession(raw: RawSession): SessionRecord {
   return {
     id: raw.id,
     taskLabel: (raw.taskLabel || 'Coding') as TaskType,
-    taskIcon: '',
+    taskIcon: TASK_ICONS[raw.taskLabel || 'Coding'] ?? '📋',
     date: raw.date,
     startTime,
     endTime,
