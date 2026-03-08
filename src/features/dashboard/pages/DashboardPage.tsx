@@ -10,10 +10,42 @@ import { SessionListCard } from '../../../components/cards/SessionListCard'
 import { FlowCalendar } from '../../../components/calendar/FlowCalendar'
 import { useDashboardData } from '../hooks'
 import { formatMinutes, formatPercent, formatStr, getStrNarrative } from '../../../lib/utils'
+import { useAuthStore } from '../../../store/auth-store'
 
 export function DashboardPage() {
   const { t } = useTranslation()
+  const token = useAuthStore((s) => s.token)
   const { data, isLoading, isError } = useDashboardData()
+
+  if (!token) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="text-center space-y-6 max-w-md">
+          <div className="text-6xl" role="img" aria-label="Brain icon">🧠</div>
+          <h2 className="text-2xl font-bold text-slate-900">
+            {t('dashboard.welcomeTitle', 'Welcome to FlowSense')}
+          </h2>
+          <p className="text-slate-500">
+            {t('dashboard.welcomeDesc', 'Track your sessions, flow time, and signal quality. Sign in to get started.')}
+          </p>
+          <div className="flex items-center justify-center gap-3">
+            <Link
+              to="/login"
+              className="rounded-xl border border-slate-200 bg-slate-50 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            >
+              {t('nav.login')}
+            </Link>
+            <Link
+              to="/register"
+              className="rounded-xl bg-blue-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-600"
+            >
+              {t('nav.register')}
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (isLoading) {
     return (
