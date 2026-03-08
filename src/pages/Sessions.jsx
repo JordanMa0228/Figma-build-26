@@ -1,12 +1,39 @@
-import { useState } from 'react'
-import { Filter } from 'lucide-react'
-import { sessions } from '../data/mockData'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Filter, Loader2 } from 'lucide-react'
+import { fetchSessions } from '../api/sessions'
 import SessionCard from '../components/SessionCard'
 
 const TASK_TYPES = ['All', 'Coding', 'Poker', 'Class', 'Music', 'Email']
 
 export default function Sessions() {
+  const navigate = useNavigate()
   const [filterTask, setFilterTask] = useState('All')
+  const [sessions, setSessions] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    let cancelled = false
+    async function loadSessions() {
+      try {
+        const data = await fetchSessions()
+        if (!cancelled) setSessions(data)
+      } catch (err) {
+        if (!cancelled) {
+          if (err.status === 401 || err.status === 403) {
+            navigate('/login')
+          } else {
+            setError('Failed to load sessions. Please try again.')
+          }
+        }
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+    loadSessions()
+    return () => { cancelled = true }
+  }, [navigate])
 
   const filtered = filterTask === 'All'
     ? sessions
@@ -38,17 +65,29 @@ export default function Sessions() {
       </div>
 
       {/* Sessions List */}
-      <div className="space-y-3">
-        {filtered.length === 0 ? (
-          <p className="text-slate-500 text-sm py-8 text-center">No sessions found.</p>
-        ) : (
-          filtered.map(session => (
-            <SessionCard key={session.id} session={session} />
-          ))
-        )}
-      </div>
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <Loader2 size={28} className="text-purple-400 animate-spin" />
+        </div>
+      ) : error ? (
+        <p className="text-slate-400 text-sm py-8 text-center">{error}</p>
+      ) : (
+        <div className="space-y-3">
+          {filtered.length === 0 ? (
+            <p className="text-slate-500 text-sm py-8 text-center">No sessions found.</p>
+          ) : (
+            filtered.map(session => (
+              <SessionCard key={session.id} session={session} />
+            ))
+          )}
+        </div>
+      )}
 
-      <p className="text-xs text-slate-600 text-center">{filtered.length} session{filtered.length !== 1 ? 's' : ''}</p>
+      {!loading && !error && (
+        <p className="text-xs text-slate-600 text-center">
+          {filtered.length} session{filtered.length !== 1 ? 's' : ''}
+        </p>
+      )}
     </div>
   )
 }
