@@ -1,6 +1,7 @@
 import { api } from '../../lib/api-client'
 import type { DashboardPayload } from '../../types/api'
 import type { SessionRecord, WeeklyFlowDatum } from '../../types/domain'
+import type { TaskType } from '../../types/domain'
 import { getSessions } from '../sessions/api'
 
 interface BackendSummary {
@@ -43,10 +44,28 @@ export async function getDashboardData(): Promise<{ success: true; data: Dashboa
   const summary = summaryRes.data
 
   const recentSessions = sessions.slice(0, 5)
-  const topSession = sessions.reduce<SessionRecord | undefined>(
+  const topSession: SessionRecord = sessions.reduce<SessionRecord | undefined>(
     (best, s) => (!best || s.flowPercent > best.flowPercent ? s : best),
     undefined,
-  ) ?? sessions[0]
+  ) ?? {
+    id: '',
+    taskLabel: 'Coding' as TaskType,
+    taskIcon: '💻',
+    date: '',
+    startTime: '',
+    endTime: '',
+    durationMin: 0,
+    avgSTR: 0,
+    peakSTR: 0,
+    flowPercent: 0,
+    longestFlowStreakMin: 0,
+    dataQuality: { eye: 0, eeg: 0, hr: 0 },
+    flowTimeline: [],
+    strTimeseries: [],
+    qualityScore: 0,
+    distractionEvents: 0,
+    note: 'No sessions yet. Start your first session!',
+  }
   const weeklyFlowData = buildWeeklyFlowData(sessions)
 
   const insights = [
@@ -86,7 +105,7 @@ export async function getDashboardData(): Promise<{ success: true; data: Dashboa
       recentSessions,
       weeklyFlowData,
       insights,
-      topSession: (topSession ?? sessions[0]) as SessionRecord,
+      topSession,
     },
   }
 }
