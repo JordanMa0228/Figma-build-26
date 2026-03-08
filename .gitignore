@@ -1,5 +1,14 @@
-node_modules
-dist
-dist-ssr
-*.local
+# Environment variables
+.env
+.env.local
+# Note: .env.production IS committed (contains public Railway URL, not secrets)
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+
+# OS files
 .DS_Store
