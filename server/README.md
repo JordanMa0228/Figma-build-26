@@ -1,6 +1,6 @@
 # Focus Time — Backend API
 
-Express + TypeScript + Prisma + SQLite backend for the Focus Time web app.
+Express + TypeScript + Prisma + PostgreSQL backend for the Focus Time web app.
 
 ## Local Development
 
@@ -18,6 +18,18 @@ Health check: http://localhost:4000/api/health
 
 ---
 
+## Railway Deployment with PostgreSQL
+
+1. In your Railway project, click **+ Add Service → Database → PostgreSQL**
+2. Railway will automatically inject `DATABASE_URL` into your backend service's environment
+3. Make sure to also set these environment variables in Railway:
+   - `JWT_SECRET` — a long random string
+   - `NODE_ENV` — `production`
+   - `FRONTEND_URL` — your Netlify frontend URL (e.g. `https://your-site.netlify.app`)
+4. The `railway:start` script runs `prisma migrate deploy` automatically before starting the server, so the database schema is applied on every deploy
+
+---
+
 ## Deploy to Railway (One-click)
 
 ### Step 1 — Create Railway project
@@ -32,13 +44,15 @@ In Railway project Settings → **Root Directory**:
 server
 ```
 
-### Step 3 — Set Environment Variables
+### Step 3 — Add PostgreSQL Service
+In your Railway project, click **+ Add Service → Database → PostgreSQL**. Railway will automatically inject `DATABASE_URL` into your backend service's environment.
+
+### Step 4 — Set Environment Variables
 In Railway → Settings → **Variables**, add:
 
 | Variable | Value |
 |---|---|
 | `JWT_SECRET` | A long random string (see below to generate) |
-| `DATABASE_URL` | `file:./dev.db` (SQLite) |
 | `NODE_ENV` | `production` |
 | `FRONTEND_URL` | Your Netlify/Vercel frontend URL |
 
@@ -47,14 +61,12 @@ Generate a secure JWT_SECRET:
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 
-### Step 4 — Deploy
+### Step 5 — Deploy
 Railway will automatically:
 1. Install dependencies (`npm install`)
 2. Generate Prisma client (`prisma generate`)
-3. Push database schema (`prisma db push`)
-4. Run seed data (`npm run db:seed`)
-5. Build TypeScript (`npm run build`)
-6. Start server (`node dist/index.js`)
+3. Build TypeScript (`npm run build`)
+4. Run migrations and start server (`prisma migrate deploy && node dist/index.js`)
 
 Your API will be live at:
 ```

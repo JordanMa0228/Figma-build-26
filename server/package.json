@@ -8,10 +8,11 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "db:push": "prisma db push",
+    "db:migrate": "prisma migrate deploy",
     "db:seed": "ts-node prisma/seed.ts",
     "db:studio": "prisma studio",
-    "railway:build": "npm install && npx prisma generate && npx prisma db push && npm run db:seed && npm run build",
-    "railway:start": "node dist/index.js"
+    "railway:build": "npm install && npx prisma generate && npm run build",
+    "railway:start": "npx prisma migrate deploy && node dist/index.js"
   },
   "engines": {
     "node": ">=20.0.0",
