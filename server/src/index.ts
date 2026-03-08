@@ -7,21 +7,27 @@ dotenv.config();
 
 const app = express();
 
-// Railway dynamically assigns PORT — must use process.env.PORT
-const PORT = process.env.PORT || 4000;
+// Railway dynamically assigns PORT via $PORT env var
+// Must convert to Number and bind to 0.0.0.0 for Railway containers
+const PORT = Number(process.env.PORT) || 8080;
 
-// CORS: allow local dev frontend + production frontend on Netlify/Vercel
+// CORS: allow local dev frontend + production frontend on Netlify
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
+  'https://remarkable-kleicha-2265d7.netlify.app',
   process.env.FRONTEND_URL || '',
 ].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, Postman)
+    // Allow requests with no origin (curl, Postman, mobile apps)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    // In development, allow all origins
+    if (process.env.NODE_ENV !== 'production') {
       return callback(null, true);
     }
     return callback(new Error('Origin not allowed by CORS policy'));
@@ -32,13 +38,28 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check — Railway uses this to verify deployment is healthy
+// Root route — returns API info (prevents 404 on root path)
+app.get('/', (_req, res) => {
+  res.json({
+    name: 'Focus Time API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/api/health',
+      login: 'POST /api/auth/login',
+      register: 'POST /api/auth/register',
+    },
+  });
+});
+
+// Health check
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
     version: '1.0.0',
+    port: PORT,
   });
 });
 
@@ -56,10 +77,12 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
   res.status(500).json({ error: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
+// CRITICAL: bind to 0.0.0.0 for Railway — do NOT use localhost
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Focus Time API running on port ${PORT}`);
   console.log(`📊 Health: http://localhost:${PORT}/api/health`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔗 Bound to: 0.0.0.0:${PORT}`);
 });
 
 export default app;
