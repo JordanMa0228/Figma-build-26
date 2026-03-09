@@ -71,7 +71,9 @@
     "cancel": "Cancelar",
     "loading": "Cargando…",
     "close": "Cerrar",
-    "none": "Ninguno"
+    "none": "Ninguno",
+    "minAbbr": "m",
+    "minutesFormat": "{{value}} min flujo"
   },
   "sessions": {
     "newSession": "Nueva sesión",

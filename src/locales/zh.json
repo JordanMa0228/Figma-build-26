@@ -71,7 +71,9 @@
     "cancel": "取消",
     "loading": "加载中…",
     "close": "关闭",
-    "none": "无"
+    "none": "无",
+    "minAbbr": "分",
+    "minutesFormat": "{{value}} 分钟心流"
   },
   "sessions": {
     "newSession": "新建会话",
