@@ -40,37 +40,11 @@ export function DashboardPage() {
 
       <section className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
         <Surface className="p-6">
-          {hasSessions ? (
-            <>
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-600">
-                    <IconfontIcon name="star" size={12} className="text-blue-600" />
-                    {t('dashboard.bestSession')}
-                  </div>
-                  <h3 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-                    {data.topSession.taskIcon} {data.topSession.taskLabel}
-                  </h3>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">{data.topSession.note}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-3 md:min-w-[320px]">
-                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.flowRatio')}</p>
-                    <p className="mt-3 text-2xl font-semibold text-slate-900">{formatPercent(data.topSession.flowPercent)}</p>
-                  </div>
-                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.avgSTR')}</p>
-                    <p className="mt-3 text-2xl font-semibold text-slate-900">{formatStr(data.topSession.avgSTR)}</p>
-                  </div>
-                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.quality')}</p>
-                    <p className="mt-3 text-2xl font-semibold text-slate-900">{data.topSession.qualityScore}</p>
-                  </div>
-                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.interpretation')}</p>
-                    <p className="mt-3 text-base font-medium text-blue-600">{t(getStrNarrativeKey(data.topSession.avgSTR))}</p>
-                  </div>
-                </div>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-600">
+                <IconfontIcon name="star" size={12} className="text-blue-600" />
+                {t('dashboard.bestSession')}
               </div>
               <h3 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
                 <TaskIconView icon={data.topSession.taskIcon} size={36} className="mr-2 inline-block align-middle text-slate-700" />
@@ -195,13 +169,9 @@ export function DashboardPage() {
             </Link>
           </div>
           <div className="space-y-4">
-            {hasSessions ? (
-              data.recentSessions.map((session) => (
-                <SessionListCard key={session.id} session={session} />
-              ))
-            ) : (
-              <p className="text-sm text-slate-500">{t('dashboard.noSessionsYet', 'No sessions yet')}</p>
-            )}
+            {data.recentSessions.map((session) => (
+              <SessionListCard key={session.id} session={session} />
+            ))}
           </div>
         </div>
 

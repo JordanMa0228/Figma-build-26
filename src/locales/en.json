@@ -202,11 +202,7 @@
     "totalSessionsDesc": "Tracked samples currently available to the frontend.",
     "weeklyFlowDesc": "Cumulative high-focus minutes across the current week.",
     "weeklySTRDesc": "Weekly baseline for cognitive pacing and subjective time.",
-    "longestStreakDesc": "Most stable uninterrupted flow block in the latest session.",
-    "insightBestTask": "Best task: {{task}} with {{percent}}% flow",
-    "insightPeakSTR": "Peak STR this week: {{value}}",
-    "insightFlowTime": "Total flow time this week: {{minutes}} min",
-    "noSessionsYet": "No sessions yet"
+    "longestStreakDesc": "Most stable uninterrupted flow block in the latest session."
   },
   "settings": {
     "configTitle": "Signal and privacy configuration",
@@ -274,10 +270,7 @@
     "daypartAnalysis": "Daypart analysis",
     "bestFocusTime": "Best focus time of day",
     "insightFeed": "Insight feed",
-    "narrativeTakeaways": "Narrative takeaways",
-    "insightBestTask": "Best task type: {{task}}",
-    "insightAvgSTR": "Average STR: {{value}}",
-    "insightAvgFlowRatio": "Average flow ratio: {{percent}}%"
+    "narrativeTakeaways": "Narrative takeaways"
   },
   "flowTimeline": {
     "title": "Flow timeline",

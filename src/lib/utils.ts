@@ -66,3 +66,4 @@ export function getDeltaLabel(left: number, right: number, unit = '') {
   const prefix = delta > 0 ? '+' : ''
   return `${prefix}${delta.toFixed(2)}${unit}`
 }
+

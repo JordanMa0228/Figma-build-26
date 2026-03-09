@@ -9,12 +9,6 @@ import { newSessionSchema, TASK_ICONS, type NewSessionSchema } from '../newSessi
 import { buildSessionFromForm } from '../buildSessionFromForm'
 import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
 import { track } from '../../../lib/tracking'
-import { createSession } from '../api'
-
-function parseTimeToMinutes(time: string): number {
-  const [h, m] = time.split(':').map(Number)
-  return (h ?? 0) * 60 + (m ?? 0)
-}
 
 interface NewSessionModalProps {
   open: boolean
@@ -38,7 +32,6 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
     resolver: zodResolver(newSessionSchema),
     defaultValues: {
       taskLabel: 'Coding',
-      customTaskLabel: '',
       date: new Date().toISOString().slice(0, 10),
       startTime: '09:00',
       endTime: '10:00',
@@ -46,58 +39,13 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
     },
   })
 
-  const watchedTaskLabel = useWatch({ control, name: 'taskLabel' })
-  const isCustom = watchedTaskLabel === 'Custom'
-
-  const onSubmit = async (data: NewSessionSchema) => {
-    const resolvedTaskLabel =
-      data.taskLabel === 'Custom' ? (data.customTaskLabel?.trim() || 'Custom') : data.taskLabel
-    try {
-      const startMin = parseTimeToMinutes(data.startTime)
-      const endMin = parseTimeToMinutes(data.endTime)
-      const durationMin = Math.max(0, endMin - startMin)
-
-      const result = await createSession({
-        taskLabel: resolvedTaskLabel,
-        date: data.date,
-        startTime: data.startTime,
-        endTime: data.endTime,
-        durationMin,
-        avgStr: 0.7,
-        flowRatio: 0.5,
-        peakStr: 0.5,
-        longestFlowStreakMin: Math.floor(durationMin / 3),
-        flowIntervals: [
-          { startMin: 0, endMin: Math.floor(durationMin / 3), state: 'Neutral', avgSTR: 0.95 },
-          { startMin: Math.floor(durationMin / 3), endMin: durationMin, state: 'Flow', avgSTR: 0.55 },
-        ],
-        strTimeseries: [
-          { t: 0, str: 1.0 },
-          { t: Math.floor(durationMin / 2), str: 0.55 },
-          { t: durationMin, str: 0.98 },
-        ],
-        quality: { eye: 90, eeg: 88, hr: 92 },
-      })
-
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['sessions'] }),
-        queryClient.invalidateQueries({ queryKey: ['dashboard'] }),
-      ])
-      track('session_create', { sessionId: result.data.id, taskLabel: result.data.taskLabel })
-      reset()
-      onClose()
-    } catch (error) {
-      console.error('[NewSessionModal] API save failed, falling back to local store:', error)
-      const session = buildSessionFromForm(data, resolvedTaskLabel)
-      addSession(session)
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['sessions'] }),
-        queryClient.invalidateQueries({ queryKey: ['dashboard'] }),
-      ])
-      track('session_create', { sessionId: session.id, taskLabel: session.taskLabel })
-      reset()
-      onClose()
-    }
+  const onSubmit = (data: NewSessionSchema) => {
+    const session = buildSessionFromForm(data)
+    addSession(session)
+    queryClient.invalidateQueries({ queryKey: ['sessions'] })
+    track('session_create', { sessionId: session.id, taskLabel: session.taskLabel })
+    reset()
+    onClose()
   }
 
   const taskOptions = useMemo(() => Object.keys(TASK_ICONS) as NewSessionSchema['taskLabel'][], [])
@@ -211,17 +159,6 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
               ) : null}
             </div>
             {errors.taskLabel && <p className="mt-1 text-sm text-red-600">{errors.taskLabel.message}</p>}
-            {isCustom && (
-              <input
-                type="text"
-                placeholder={t('sessions.customTaskPlaceholder', 'Enter task name...')}
-                className="mt-3 h-[60px] w-full rounded-[14px] border border-slate-200 bg-white px-4 text-[18px] font-semibold text-slate-900 placeholder:text-slate-400 focus:border-2 focus:border-blue-500 focus:outline-none"
-                {...register('customTaskLabel')}
-              />
-            )}
-            {errors.customTaskLabel && (
-              <p className="mt-1 text-sm text-red-600">{errors.customTaskLabel.message}</p>
-            )}
           </div>
 
           {/* Row 4: Description (note) */}

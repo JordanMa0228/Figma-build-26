@@ -1,4 +1,4 @@
-import type { SessionRecord, TaskType } from '../../types/domain'
+import type { SessionRecord } from '../../types/domain'
 import type { NewSessionSchema } from './newSessionSchema'
 import { TASK_ICONS } from './newSessionSchema'
 
@@ -7,17 +7,16 @@ function parseTimeToMinutes(time: string): number {
   return (h ?? 0) * 60 + (m ?? 0)
 }
 
-export function buildSessionFromForm(data: NewSessionSchema, overrideTaskLabel?: string): SessionRecord {
+export function buildSessionFromForm(data: NewSessionSchema): SessionRecord {
   const startMin = parseTimeToMinutes(data.startTime)
   const endMin = parseTimeToMinutes(data.endTime)
   const durationMin = Math.max(0, endMin - startMin)
   const id = `session-${Date.now()}`
-  const resolvedTaskLabel = overrideTaskLabel ?? data.taskLabel
 
   return {
     id,
-    taskLabel: resolvedTaskLabel as TaskType,
-    taskIcon: data.taskLabel === 'Custom' ? '✏️' : (TASK_ICONS[data.taskLabel] ?? '✏️'),
+    taskLabel: data.taskLabel,
+    taskIcon: TASK_ICONS[data.taskLabel],
     date: data.date,
     startTime: data.startTime,
     endTime: data.endTime,

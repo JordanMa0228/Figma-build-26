@@ -22,3 +22,4 @@ export function InsightCard({ icon, text, textKey }: InsightCardProps) {
     </Surface>
   )
 }
+
