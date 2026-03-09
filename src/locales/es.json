@@ -252,7 +252,9 @@
     "qualityDelta": "Delta de calidad",
     "qualityDeltaDesc": "Diferencia de integridad de sensores entre el par seleccionado.",
     "sessionA": "Sesión A",
-    "sessionB": "Sesión B"
+    "sessionB": "Sesión B",
+    "selectSession": "Selecciona una sesión…",
+    "selectSessionPrompt": "Selecciona una sesión para comenzar"
   },
   "trends": {
     "eyebrow": "Analíticas",
