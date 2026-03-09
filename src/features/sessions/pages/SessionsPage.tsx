@@ -33,7 +33,7 @@ export function SessionsPage() {
       const searchValue = sessionSearch.toLowerCase()
       const matchesSearch =
         session.taskLabel.toLowerCase().includes(searchValue) ||
-        session.note.toLowerCase().includes(searchValue) ||
+        session.note?.toLowerCase().includes(searchValue) ||
         session.date.includes(searchValue)
 
       return matchesFilter && matchesSearch

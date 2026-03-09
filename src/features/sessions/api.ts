@@ -9,6 +9,7 @@ interface RawSession {
   durationMin: number
   avgStr: number
   flowRatio: number
+  note?: string | null
   report?: {
     flowIntervals?: string
     strTimeseries?: string
@@ -64,7 +65,7 @@ function mapSession(raw: RawSession): SessionRecord {
     strTimeseries,
     qualityScore: 0,
     distractionEvents: 0,
-    note: '',
+    note: raw.note ?? '',
   }
 }
 

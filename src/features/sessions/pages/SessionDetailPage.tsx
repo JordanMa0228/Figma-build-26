@@ -58,7 +58,7 @@ export function SessionDetailPage() {
       <PageHeader
         eyebrow={t('sessions.sessionReport')}
         title={`${session.taskIcon} ${session.taskLabel} ${t('sessions.deepDive')}`}
-        description={`${format(new Date(session.date), 'EEEE, MMM d, yyyy')} · ${session.startTime} to ${session.endTime} · ${session.note}`}
+        description={`${format(new Date(session.date), 'EEEE, MMM d, yyyy')} · ${session.startTime} to ${session.endTime} · ${session.note ?? ''}`}
         actions={<StatusPill tone={session.flowPercent >= 60 ? 'flow' : 'neutral'}>{t('sessions.flowPercentFormat', { percent: session.flowPercent })}</StatusPill>}
       />
 
@@ -118,7 +118,7 @@ export function SessionDetailPage() {
 
           <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('sessions.analystNote')}</p>
-            <p className="mt-3 text-sm leading-7 text-slate-600">{session.note}</p>
+            <p className="mt-3 text-sm leading-7 text-slate-600">{session.note ?? ''}</p>
             <p className="mt-3 text-xs text-slate-500">
               {t('sessions.activeTags')}: {activeAnnotations.length ? activeAnnotations.join(', ') : t('common.none')}
             </p>
