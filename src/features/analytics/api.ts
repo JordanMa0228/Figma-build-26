@@ -1,4 +1,5 @@
 import { api } from '../../lib/api-client'
+import i18n from '../../lib/i18n'
 import type { AnalyticsPayload } from '../../types/api'
 import type {
   AnalyticsOverview,
@@ -47,23 +48,19 @@ export async function getAnalyticsData(): Promise<{ success: true; data: Analyti
     {
       id: 1,
       icon: '🏆',
-      textKey: 'insights.bestTaskType',
-      textValues: { task: overview.bestTaskType },
-      text: '',
+      text: i18n.t('trends.insightBestTask', { task: overview.bestTaskType }),
     },
     {
       id: 2,
       icon: '📈',
-      textKey: 'insights.avgSTR',
-      textValues: { value: overview.avgSTR.toFixed(2) },
-      text: '',
+      text: i18n.t('trends.insightAvgSTR', { value: overview.avgSTR.toFixed(2) }),
     },
     {
       id: 3,
       icon: '⏱️',
-      textKey: 'insights.avgFlowRatio',
-      textValues: { percent: (overview.avgFlowRatio * 100).toFixed(0) },
-      text: '',
+      text: i18n.t('trends.insightAvgFlowRatio', {
+        percent: (overview.avgFlowRatio * 100).toFixed(0),
+      }),
     },
   ]
 

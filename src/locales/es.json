@@ -208,7 +208,11 @@
     "totalSessionsDesc": "Muestras rastreadas actualmente disponibles en el frontend.",
     "weeklyFlowDesc": "Minutos de alto enfoque acumulados en la semana actual.",
     "weeklySTRDesc": "Línea base semanal de ritmo cognitivo y tiempo subjetivo.",
-    "longestStreakDesc": "Mayor bloque de flujo ininterrumpido en la última sesión."
+    "longestStreakDesc": "Mayor bloque de flujo ininterrumpido en la última sesión.",
+    "insightBestTask": "Mejor tarea: {{task}} con {{percent}}% de flujo",
+    "insightPeakSTR": "STR pico esta semana: {{value}}",
+    "insightFlowTime": "Tiempo total de flujo esta semana: {{minutes}} min",
+    "noSessionsYet": "Aún no hay sesiones"
   },
   "settings": {
     "configTitle": "Configuración de señal y privacidad",
@@ -276,7 +280,10 @@
     "daypartAnalysis": "Análisis por franja horaria",
     "bestFocusTime": "Mejor momento de enfoque del día",
     "insightFeed": "Hilo de insights",
-    "narrativeTakeaways": "Conclusiones narrativas"
+    "narrativeTakeaways": "Conclusiones narrativas",
+    "insightBestTask": "Tipo de tarea con mejor rendimiento: {{task}}",
+    "insightAvgSTR": "STR promedio: {{value}}",
+    "insightAvgFlowRatio": "Proporción de flujo promedio: {{percent}}%"
   },
   "flowTimeline": {
     "title": "Línea temporal de flujo",
