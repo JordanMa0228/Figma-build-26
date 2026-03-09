@@ -48,16 +48,22 @@ export async function getAnalyticsData(): Promise<{ success: true; data: Analyti
       id: 1,
       icon: '🏆',
       text: `Best task type: ${overview.bestTaskType}`,
+      textKey: 'insights.bestTaskType',
+      params: { taskType: overview.bestTaskType },
     },
     {
       id: 2,
       icon: '📈',
       text: `Average STR: ${overview.avgSTR.toFixed(2)}`,
+      textKey: 'insights.avgSTR',
+      params: { value: overview.avgSTR.toFixed(2) },
     },
     {
       id: 3,
       icon: '⏱️',
       text: `Average flow ratio: ${(overview.avgFlowRatio * 100).toFixed(0)}%`,
+      textKey: 'insights.avgFlowRatio',
+      params: { value: (overview.avgFlowRatio * 100).toFixed(0) },
     },
   ]
 

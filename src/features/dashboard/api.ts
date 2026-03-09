@@ -72,19 +72,27 @@ export async function getDashboardData(): Promise<{ success: true; data: Dashboa
     {
       id: 1,
       icon: '🏆',
-      text: topSession
-        ? `Best task: ${topSession.taskLabel} with ${topSession.flowPercent.toFixed(0)}% flow`
+      text: topSession.id
+        ? `Best task: ${topSession.taskLabel} with ${Math.round(topSession.flowPercent)}% flow`
         : 'No sessions yet',
+      textKey: topSession.id ? 'insights.bestTask' : 'insights.noSessions',
+      params: topSession.id
+        ? { taskLabel: topSession.taskLabel, flowPercent: Math.round(topSession.flowPercent) }
+        : undefined,
     },
     {
       id: 2,
       icon: '📈',
       text: `Peak STR this week: ${summary.avgSTRThisWeek.toFixed(2)}`,
+      textKey: 'insights.peakSTR',
+      params: { value: summary.avgSTRThisWeek.toFixed(2) },
     },
     {
       id: 3,
       icon: '⏱️',
       text: `Total flow time this week: ${summary.weeklyFlowTimeMin} min`,
+      textKey: 'insights.weeklyFlowTime',
+      params: { value: summary.weeklyFlowTimeMin },
     },
   ]
 

@@ -6,11 +6,12 @@ interface InsightCardProps {
   icon: string
   text: string
   textKey?: string
+  params?: Record<string, unknown>
 }
 
-export function InsightCard({ icon, text, textKey }: InsightCardProps) {
+export function InsightCard({ icon, text, textKey, params }: InsightCardProps) {
   const { t } = useTranslation()
-  const displayText = textKey ? t(textKey) : text
+  const displayText = textKey ? t(textKey, params) : text
   return (
     <Surface className="p-5">
       <div className="flex items-start gap-4">

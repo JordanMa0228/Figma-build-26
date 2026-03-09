@@ -159,7 +159,7 @@ export function TrendsPage() {
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('trends.narrativeTakeaways')}</h3>
           </div>
           {data.insights.map((item) => (
-            <InsightCard key={item.id} icon={item.icon} text={item.text} textKey={item.textKey} />
+            <InsightCard key={item.id} icon={item.icon} text={item.text} textKey={item.textKey} params={item.params} />
           ))}
         </div>
       </section>

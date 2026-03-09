@@ -101,7 +101,14 @@
     "flow2x": "You enter Flow 2.3x more during Coding than Email sessions.",
     "strBottoms": "Your STR bottoms out most often between 9 PM and 11 PM.",
     "pokerHighest": "Poker sessions show the highest average flow ratio this week.",
-    "classDistraction": "Class sessions carry the highest distraction load and recovery time."
+    "classDistraction": "Class sessions carry the highest distraction load and recovery time.",
+    "bestTask": "Best task: {{taskLabel}} with {{flowPercent}}% flow",
+    "noSessions": "No sessions yet",
+    "peakSTR": "Peak STR this week: {{value}}",
+    "weeklyFlowTime": "Total flow time this week: {{value}} min",
+    "bestTaskType": "Best task type: {{taskType}}",
+    "avgSTR": "Average STR: {{value}}",
+    "avgFlowRatio": "Average flow ratio: {{value}}%"
   },
   "annotations": {
     "veryFocused": "Very focused",

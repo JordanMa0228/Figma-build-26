@@ -47,6 +47,10 @@ function mapSession(raw: RawSession): SessionRecord {
     } catch { /* ignore */ }
   }
 
+  const qualityScore = dataQuality.eye && dataQuality.eeg && dataQuality.hr
+    ? Math.round((dataQuality.eye + dataQuality.eeg + dataQuality.hr) / 3)
+    : 0
+
   return {
     id: raw.id,
     taskLabel: (raw.taskLabel || 'Coding') as TaskType,
@@ -62,7 +66,7 @@ function mapSession(raw: RawSession): SessionRecord {
     dataQuality,
     flowTimeline,
     strTimeseries,
-    qualityScore: 0,
+    qualityScore,
     distractionEvents: 0,
     note: '',
   }

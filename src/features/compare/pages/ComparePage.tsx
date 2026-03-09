@@ -94,7 +94,7 @@ export function ComparePage() {
           <MetricCard
             icon="compare"
             label={t('compare.flowDelta')}
-            value={getDeltaLabel(leftSession.flowPercent, rightSession.flowPercent, '%')}
+            value={getDeltaLabel(leftSession.flowPercent, rightSession.flowPercent, '%', 0)}
             description={t('compare.flowDeltaDesc')}
             tone="flow"
           />
