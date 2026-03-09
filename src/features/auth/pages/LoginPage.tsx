@@ -68,8 +68,7 @@ export function LoginPage() {
           <input
             type="password"
             autoComplete="current-password"
-            placeholder="••••••••"
-            className="h-[60px] w-full rounded-[14px] border-0 bg-slate-100 px-4 text-[20px] font-semibold text-slate-900 placeholder:text-slate-400 focus:border-2 focus:border-blue-500 focus:bg-white focus:outline-none"
+            className="h-[60px] w-full rounded-[14px] border-2 border-transparent bg-white px-4 text-[20px] font-semibold text-slate-900 focus:border-blue-500 focus:outline-none"
             {...registerField('password')}
           />
           {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}

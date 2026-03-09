@@ -3,15 +3,12 @@ import { PageHeader } from '../../../components/ui/PageHeader'
 import { Surface } from '../../../components/ui/Surface'
 import { MetricCard } from '../../../components/ui/MetricCard'
 import { IconfontIcon } from '../../../components/ui/IconfontIcon'
-import { format } from 'date-fns'
 import { FlowTimelineChart } from '../../../components/charts/FlowTimelineChart'
 import { StrLineChart } from '../../../components/charts/StrLineChart'
 import { useUiStore } from '../../../store/ui-store'
 import { getDeltaLabel } from '../../../lib/utils'
 import type { SessionRecord } from '../../../types/domain'
 import { useSessionsData } from '../../sessions/hooks'
-import { TaskIconView } from '../../../components/ui/TaskIconView'
-import { getDateLocale } from '../../../lib/date-locale'
 
 function CompareColumn({
   title,
@@ -24,12 +21,9 @@ function CompareColumn({
   onChange: (nextValue: string) => void
   sessions: SessionRecord[]
 }) {
-  const { t, i18n } = useTranslation()
   const session = sessions.find((item) => item.id === value)
 
   if (!session) return null
-  const displayNote = session.note.startsWith('sessionNotes.') ? t(session.note) : session.note
-  const displayDate = format(new Date(session.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })
 
   return (
     <div className="space-y-4">
@@ -42,16 +36,15 @@ function CompareColumn({
         >
           {sessions.map((item) => (
             <option key={item.id} value={item.id}>
-              {t(`tasks.${item.taskLabel}`)} · {format(new Date(item.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {t('common.minutesFormat', { value: item.durationMin })}
+              {item.taskLabel} · {item.date} · {item.durationMin} min
             </option>
           ))}
         </select>
         <div className="mt-4 rounded-3xl border border-slate-200 bg-slate-50 p-4">
           <p className="text-lg font-semibold text-slate-900">
-            <TaskIconView icon={session.taskIcon} size={22} className="mr-2 inline-block align-middle text-slate-700" />
-            {t(`tasks.${session.taskLabel}`)}
+            {session.taskIcon} {session.taskLabel}
           </p>
-          <p className="mt-2 text-sm text-slate-500">{displayDate} · {displayNote}</p>
+          <p className="mt-2 text-sm text-slate-500">{session.note}</p>
         </div>
       </Surface>
 

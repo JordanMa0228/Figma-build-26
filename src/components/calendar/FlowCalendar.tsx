@@ -5,7 +5,6 @@ import { useSessionsData } from '../../features/sessions/hooks'
 import { Surface } from '../ui/Surface'
 import { IconfontIcon } from '../ui/IconfontIcon'
 import { cn } from '../../lib/utils'
-import { getDateLocale } from '../../lib/date-locale'
 
 /** 从 sessions 按日期汇总当日 mind flow 总时长（分钟） */
 function useDailyFlowMinutes(): Record<string, number> {
@@ -23,7 +22,7 @@ function useDailyFlowMinutes(): Record<string, number> {
 const WEEKDAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const
 
 export function FlowCalendar() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [viewDate, setViewDate] = useState(() => new Date())
   const dailyFlow = useDailyFlowMinutes()
 
@@ -63,7 +62,7 @@ export function FlowCalendar() {
             <IconfontIcon name="arrow-left" size={18} />
           </button>
           <span className="min-w-[10rem] text-center text-base font-semibold text-slate-900">
-            {format(viewDate, 'MMMM yyyy', { locale: getDateLocale(i18n.language) })}
+            {format(viewDate, 'MMMM yyyy')}
           </span>
           <button
             type="button"
@@ -120,9 +119,9 @@ export function FlowCalendar() {
                       style={{
                         backgroundColor: `rgba(59, 130, 246, ${0.5 + intensity * 0.5})`,
                       }}
-                      title={t('common.minutesFormat', { value: flowMin })}
+                      title={`${flowMin} min flow`}
                     >
-                      {flowMin}{t('common.minAbbr')}
+                      {flowMin}m
                     </div>
                   </div>
                 ) : (
