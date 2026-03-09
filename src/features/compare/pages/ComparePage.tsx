@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { Surface } from '../../../components/ui/Surface'
@@ -9,6 +10,7 @@ import { useUiStore } from '../../../store/ui-store'
 import { getDeltaLabel, safeDateFormat } from '../../../lib/utils'
 import type { SessionRecord } from '../../../types/domain'
 import { useSessionsData } from '../../sessions/hooks'
+import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
 import { TaskIconView } from '../../../components/ui/TaskIconView'
 import { getDateLocale } from '../../../lib/date-locale'
 
@@ -72,14 +74,49 @@ function CompareColumn({
 
 export function ComparePage() {
   const { t } = useTranslation()
-  const { data: sessions = [] } = useSessionsData()
+  const { data: apiSessions = [] } = useSessionsData()
+  const createdSessions = useCreatedSessionsStore((s) => s.sessions)
+  const sessions = useMemo(() => {
+    const merged = [...createdSessions, ...apiSessions]
+    const seen = new Set<string>()
+    return merged.filter((s) => {
+      if (seen.has(s.id)) return false
+      seen.add(s.id)
+      return true
+    })
+  }, [createdSessions, apiSessions])
   const compareLeftId = useUiStore((state) => state.compareLeftId)
   const compareRightId = useUiStore((state) => state.compareRightId)
   const setCompareLeftId = useUiStore((state) => state.setCompareLeftId)
   const setCompareRightId = useUiStore((state) => state.setCompareRightId)
 
+  useEffect(() => {
+    if (sessions.length >= 1 && !compareLeftId) {
+      setCompareLeftId(sessions[0].id)
+    }
+    if (sessions.length >= 2 && !compareRightId) {
+      setCompareRightId(sessions[1].id)
+    }
+  }, [sessions, compareLeftId, compareRightId, setCompareLeftId, setCompareRightId])
+
   const leftSession = sessions.find((item) => item.id === compareLeftId)
   const rightSession = sessions.find((item) => item.id === compareRightId)
+
+  if (sessions.length === 0) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          eyebrow={t('compare.eyebrow')}
+          title={t('compare.title')}
+          description={t('compare.description')}
+        />
+        <Surface className="p-12 text-center">
+          <p className="text-lg font-medium text-slate-900">{t('compare.noSessions')}</p>
+          <p className="mt-2 text-sm text-slate-500">{t('compare.noSessionsHint')}</p>
+        </Surface>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">

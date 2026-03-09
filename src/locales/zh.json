@@ -203,7 +203,9 @@
     "sessionA": "会话 A",
     "sessionB": "会话 B",
     "selectSession": "选择会话…",
-    "selectSessionPrompt": "选择一个会话以开始"
+    "selectSessionPrompt": "选择一个会话以开始",
+    "noSessions": "暂无会话数据。",
+    "noSessionsHint": "请先创建一个会话，然后再进行对比。"
   },
   "trends": {
     "eyebrow": "分析",
