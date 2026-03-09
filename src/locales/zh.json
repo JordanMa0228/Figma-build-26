@@ -208,7 +208,11 @@
     "totalSessionsDesc": "当前前端可用的已追踪样本数。",
     "weeklyFlowDesc": "本周累计高专注分钟数。",
     "weeklySTRDesc": "认知节奏与主观时间的周基线。",
-    "longestStreakDesc": "最近会话中最长连续心流时段。"
+    "longestStreakDesc": "最近会话中最长连续心流时段。",
+    "insightBestTask": "最佳任务：{{task}}，心流占比 {{percent}}%",
+    "insightPeakSTR": "本周峰值 STR：{{value}}",
+    "insightFlowTime": "本周心流总时长：{{minutes}} 分钟",
+    "noSessionsYet": "暂无会话"
   },
   "settings": {
     "configTitle": "信号与隐私配置",
@@ -276,7 +280,10 @@
     "daypartAnalysis": "时段分析",
     "bestFocusTime": "最佳专注时段",
     "insightFeed": "洞察流",
-    "narrativeTakeaways": "要点摘要"
+    "narrativeTakeaways": "要点摘要",
+    "insightBestTask": "最佳任务类型：{{task}}",
+    "insightAvgSTR": "平均 STR：{{value}}",
+    "insightAvgFlowRatio": "平均心流占比：{{percent}}%"
   },
   "flowTimeline": {
     "title": "心流时间线",

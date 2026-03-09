@@ -1,4 +1,5 @@
 import { api } from '../../lib/api-client'
+import i18n from '../../lib/i18n'
 import type { DashboardPayload } from '../../types/api'
 import type { SessionRecord, WeeklyFlowDatum } from '../../types/domain'
 import type { TaskType } from '../../types/domain'
@@ -72,26 +73,26 @@ export async function getDashboardData(): Promise<{ success: true; data: Dashboa
     {
       id: 1,
       icon: '🏆',
-      textKey: 'insights.bestTask',
-      textValues: {
-        task: topSession ? topSession.taskLabel : '',
-        percent: topSession ? topSession.flowPercent.toFixed(0) : '0',
-      },
-      text: '',
+      text: topSession
+        ? i18n.t('dashboard.insightBestTask', {
+            task: topSession.taskLabel,
+            percent: topSession.flowPercent.toFixed(0),
+          })
+        : i18n.t('dashboard.noSessionsYet'),
     },
     {
       id: 2,
       icon: '📈',
-      textKey: 'insights.peakSTR',
-      textValues: { value: summary.avgSTRThisWeek.toFixed(2) },
-      text: '',
+      text: i18n.t('dashboard.insightPeakSTR', {
+        value: summary.avgSTRThisWeek.toFixed(2),
+      }),
     },
     {
       id: 3,
       icon: '⏱️',
-      textKey: 'insights.totalFlowTime',
-      textValues: { value: summary.weeklyFlowTimeMin },
-      text: '',
+      text: i18n.t('dashboard.insightFlowTime', {
+        minutes: summary.weeklyFlowTimeMin,
+      }),
     },
   ]
 
