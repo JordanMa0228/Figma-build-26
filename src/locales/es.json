@@ -101,13 +101,7 @@
     "flow2x": "Entras en flujo 2,3 veces más en sesiones de análisis que de correo.",
     "strBottoms": "Tu STR toca fondo con más frecuencia entre las 21:00 y las 23:00.",
     "pokerHighest": "Las sesiones de póquer tienen el mayor ratio de flujo esta semana.",
-    "classDistraction": "Las sesiones de clase tienen la mayor carga de distracción y tiempo de recuperación.",
-    "bestTask": "Mejor tarea: {{task}} con {{percent}}% de flujo",
-    "bestTaskType": "Mejor tipo de tarea: {{task}}",
-    "peakSTR": "STR máximo esta semana: {{value}}",
-    "avgSTR": "STR promedio: {{value}}",
-    "totalFlowTime": "Tiempo total de flujo esta semana: {{value}} min",
-    "avgFlowRatio": "Proporción de flujo promedio: {{percent}}%"
+    "classDistraction": "Las sesiones de clase tienen la mayor carga de distracción y tiempo de recuperación."
   },
   "annotations": {
     "veryFocused": "Muy concentrado",
@@ -208,11 +202,7 @@
     "totalSessionsDesc": "Muestras rastreadas actualmente disponibles en el frontend.",
     "weeklyFlowDesc": "Minutos de alto enfoque acumulados en la semana actual.",
     "weeklySTRDesc": "Línea base semanal de ritmo cognitivo y tiempo subjetivo.",
-    "longestStreakDesc": "Mayor bloque de flujo ininterrumpido en la última sesión.",
-    "insightBestTask": "Mejor tarea: {{task}} con {{percent}}% de flujo",
-    "insightPeakSTR": "STR pico esta semana: {{value}}",
-    "insightFlowTime": "Tiempo total de flujo esta semana: {{minutes}} min",
-    "noSessionsYet": "Aún no hay sesiones"
+    "longestStreakDesc": "Mayor bloque de flujo ininterrumpido en la última sesión."
   },
   "settings": {
     "configTitle": "Configuración de señal y privacidad",
@@ -280,10 +270,7 @@
     "daypartAnalysis": "Análisis por franja horaria",
     "bestFocusTime": "Mejor momento de enfoque del día",
     "insightFeed": "Hilo de insights",
-    "narrativeTakeaways": "Conclusiones narrativas",
-    "insightBestTask": "Tipo de tarea con mejor rendimiento: {{task}}",
-    "insightAvgSTR": "STR promedio: {{value}}",
-    "insightAvgFlowRatio": "Proporción de flujo promedio: {{percent}}%"
+    "narrativeTakeaways": "Conclusiones narrativas"
   },
   "flowTimeline": {
     "title": "Línea temporal de flujo",

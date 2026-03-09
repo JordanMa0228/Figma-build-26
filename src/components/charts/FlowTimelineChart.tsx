@@ -23,7 +23,7 @@ export function FlowTimelineChart({ timeline, durationMin }: FlowTimelineChartPr
           <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('flowTimeline.title')}</p>
           <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('flowTimeline.subtitle')}</h3>
         </div>
-        <p className="text-sm text-slate-500">{durationMin} {t('flowTimeline.minuteWindow')}</p>
+        <p className="text-sm text-slate-500">{t('common.minutesFormat', { value: durationMin })}</p>
       </div>
 
       <div className="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
@@ -40,7 +40,7 @@ export function FlowTimelineChart({ timeline, durationMin }: FlowTimelineChartPr
                 <div className="pointer-events-none absolute left-1/2 top-2 hidden -translate-x-1/2 rounded-2xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 shadow-panel group-hover:block">
                   <p className="font-semibold text-slate-900">{t(`flowTimelineLegend.${segment.state}`)}</p>
                   <p className="mt-1 text-slate-400">
-                    {segment.startMin}m to {segment.endMin}m
+                    {segment.startMin}{t('common.minAbbr')} – {segment.endMin}{t('common.minAbbr')}
                   </p>
                   <p className="text-slate-400">{t('dashboard.avgSTR')} {segment.avgSTR.toFixed(2)}</p>
                 </div>
@@ -51,8 +51,8 @@ export function FlowTimelineChart({ timeline, durationMin }: FlowTimelineChartPr
       </div>
 
       <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-        <span>0m</span>
-        <span>{durationMin}m</span>
+        <span>0{t('common.minAbbr')}</span>
+        <span>{durationMin}{t('common.minAbbr')}</span>
       </div>
 
       <div className="mt-5 flex flex-wrap gap-3">

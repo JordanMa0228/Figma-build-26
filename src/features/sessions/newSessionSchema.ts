@@ -1,8 +1,7 @@
 import { z } from 'zod'
 
 export const newSessionSchema = z.object({
-  taskLabel: z.enum(['Coding', 'Poker', 'Class', 'Music', 'Email', 'Custom']),
-  customTaskLabel: z.string().optional(),
+  taskLabel: z.enum(['Coding', 'Poker', 'Class', 'Music', 'Email']),
   date: z.string().min(1, 'Date is required'),
   startTime: z.string().regex(/^\d{1,2}:\d{2}$/, 'Use HH:mm'),
   endTime: z.string().regex(/^\d{1,2}:\d{2}$/, 'Use HH:mm'),
@@ -16,12 +15,6 @@ export const newSessionSchema = z.object({
     return endMin > startMin
   },
   { message: 'End time must be after start time', path: ['endTime'] },
-).refine(
-  (data) => {
-    if (data.taskLabel !== 'Custom') return true
-    return Boolean(data.customTaskLabel?.trim())
-  },
-  { message: 'Please enter a custom task name', path: ['customTaskLabel'] },
 )
 
 export type NewSessionSchema = z.infer<typeof newSessionSchema>
@@ -32,5 +25,4 @@ export const TASK_ICONS: Record<NewSessionSchema['taskLabel'], string> = {
   Class: '📚',
   Music: '🎵',
   Email: '📧',
-  Custom: '✏️',
 }

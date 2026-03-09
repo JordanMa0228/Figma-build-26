@@ -283,17 +283,18 @@ const baseSessions: Omit<SessionRecord, 'qualityScore' | 'distractionEvents' | '
   },
 ]
 
-const sessionNotes: Record<TaskType, string> = {
-  Coding: 'Stable immersion after the warm-up segment with minimal interruption.',
-  Poker: 'Fast drop in STR with sustained high-confidence flow intervals.',
-  Class: 'Flow windows are short and fragile, with longer distracted stretches.',
-  Music: 'Smooth pacing with strong evening focus and moderate recovery latency.',
-  Email: 'High context switching profile with elevated subjective time drag.',
+const sessionNoteKeys: Record<TaskType, string> = {
+  Coding: 'sessionNotes.Coding',
+  Poker: 'sessionNotes.Poker',
+  Class: 'sessionNotes.Class',
+  Music: 'sessionNotes.Music',
+  Email: 'sessionNotes.Email',
 }
 
 export const taskOptions: TaskType[] = ['Coding', 'Poker', 'Class', 'Music', 'Email']
 export const taskFilterOptions: TaskFilter[] = ['All', ...taskOptions]
-export const annotationOptions = ['Very focused', 'Distracted', 'Flow zone', 'Tired', 'Energized']
+/** i18n keys for annotation chips (use with t(`annotations.${key}`)). */
+export const annotationOptionKeys = ['veryFocused', 'distracted', 'flowZone', 'tired', 'energized'] as const
 
 export const sessions: SessionRecord[] = baseSessions.map((session) => {
   const qualityScore = Math.round(average([session.dataQuality.eye, session.dataQuality.eeg, session.dataQuality.hr]))
@@ -303,7 +304,7 @@ export const sessions: SessionRecord[] = baseSessions.map((session) => {
     ...session,
     qualityScore,
     distractionEvents,
-    note: sessionNotes[session.taskLabel],
+    note: sessionNoteKeys[session.taskLabel],
   }
 })
 
@@ -321,10 +322,10 @@ export const weeklyStats: WeeklyStats = {
 }
 
 export const insights: InsightItem[] = [
-  { id: 1, text: 'You enter Flow 2.3x more during Coding than Email sessions.', icon: '💡' },
-  { id: 2, text: 'Your STR bottoms out most often between 9 PM and 11 PM.', icon: '🌙' },
-  { id: 3, text: 'Poker sessions show the highest average flow ratio this week.', icon: '🃏' },
-  { id: 4, text: 'Class sessions carry the highest distraction load and recovery time.', icon: '📚' },
+  { id: 1, text: 'You enter Flow 2.3x more during Coding than Email sessions.', icon: '💡', textKey: 'insights.flow2x' },
+  { id: 2, text: 'Your STR bottoms out most often between 9 PM and 11 PM.', icon: '🌙', textKey: 'insights.strBottoms' },
+  { id: 3, text: 'Poker sessions show the highest average flow ratio this week.', icon: '🃏', textKey: 'insights.pokerHighest' },
+  { id: 4, text: 'Class sessions carry the highest distraction load and recovery time.', icon: '📚', textKey: 'insights.classDistraction' },
 ]
 
 export const weeklyFlowData: WeeklyFlowDatum[] = [

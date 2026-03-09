@@ -101,13 +101,7 @@
     "flow2x": "You enter Flow 2.3x more during Coding than Email sessions.",
     "strBottoms": "Your STR bottoms out most often between 9 PM and 11 PM.",
     "pokerHighest": "Poker sessions show the highest average flow ratio this week.",
-    "classDistraction": "Class sessions carry the highest distraction load and recovery time.",
-    "bestTask": "Best task: {{task}} with {{percent}}% flow",
-    "bestTaskType": "Best task type: {{task}}",
-    "peakSTR": "Peak STR this week: {{value}}",
-    "avgSTR": "Average STR: {{value}}",
-    "totalFlowTime": "Total flow time this week: {{value}} min",
-    "avgFlowRatio": "Average flow ratio: {{percent}}%"
+    "classDistraction": "Class sessions carry the highest distraction load and recovery time."
   },
   "annotations": {
     "veryFocused": "Very focused",
@@ -208,11 +202,7 @@
     "totalSessionsDesc": "Tracked samples currently available to the frontend.",
     "weeklyFlowDesc": "Cumulative high-focus minutes across the current week.",
     "weeklySTRDesc": "Weekly baseline for cognitive pacing and subjective time.",
-    "longestStreakDesc": "Most stable uninterrupted flow block in the latest session.",
-    "insightBestTask": "Best task: {{task}} with {{percent}}% flow",
-    "insightPeakSTR": "Peak STR this week: {{value}}",
-    "insightFlowTime": "Total flow time this week: {{minutes}} min",
-    "noSessionsYet": "No sessions yet"
+    "longestStreakDesc": "Most stable uninterrupted flow block in the latest session."
   },
   "settings": {
     "configTitle": "Signal and privacy configuration",
@@ -280,10 +270,7 @@
     "daypartAnalysis": "Daypart analysis",
     "bestFocusTime": "Best focus time of day",
     "insightFeed": "Insight feed",
-    "narrativeTakeaways": "Narrative takeaways",
-    "insightBestTask": "Best task type: {{task}}",
-    "insightAvgSTR": "Average STR: {{value}}",
-    "insightAvgFlowRatio": "Average flow ratio: {{percent}}%"
+    "narrativeTakeaways": "Narrative takeaways"
   },
   "flowTimeline": {
     "title": "Flow timeline",

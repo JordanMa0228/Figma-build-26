@@ -101,13 +101,7 @@
     "flow2x": "在技术分析会话中进入心流的频率比邮件会话高 2.3 倍。",
     "strBottoms": "STR 最常在晚上 9 点到 11 点之间触底。",
     "pokerHighest": "本周扑克会话的平均心流占比最高。",
-    "classDistraction": "课堂会话的分心负荷与恢复时间最高。",
-    "bestTask": "最佳任务：{{task}}，心流占比 {{percent}}%",
-    "bestTaskType": "最佳任务类型：{{task}}",
-    "peakSTR": "本周峰值 STR：{{value}}",
-    "avgSTR": "平均 STR：{{value}}",
-    "totalFlowTime": "本周心流总时长：{{value}} 分钟",
-    "avgFlowRatio": "平均心流占比：{{percent}}%"
+    "classDistraction": "课堂会话的分心负荷与恢复时间最高。"
   },
   "annotations": {
     "veryFocused": "非常专注",
@@ -208,11 +202,7 @@
     "totalSessionsDesc": "当前前端可用的已追踪样本数。",
     "weeklyFlowDesc": "本周累计高专注分钟数。",
     "weeklySTRDesc": "认知节奏与主观时间的周基线。",
-    "longestStreakDesc": "最近会话中最长连续心流时段。",
-    "insightBestTask": "最佳任务：{{task}}，心流占比 {{percent}}%",
-    "insightPeakSTR": "本周峰值 STR：{{value}}",
-    "insightFlowTime": "本周心流总时长：{{minutes}} 分钟",
-    "noSessionsYet": "暂无会话"
+    "longestStreakDesc": "最近会话中最长连续心流时段。"
   },
   "settings": {
     "configTitle": "信号与隐私配置",
@@ -280,10 +270,7 @@
     "daypartAnalysis": "时段分析",
     "bestFocusTime": "最佳专注时段",
     "insightFeed": "洞察流",
-    "narrativeTakeaways": "要点摘要",
-    "insightBestTask": "最佳任务类型：{{task}}",
-    "insightAvgSTR": "平均 STR：{{value}}",
-    "insightAvgFlowRatio": "平均心流占比：{{percent}}%"
+    "narrativeTakeaways": "要点摘要"
   },
   "flowTimeline": {
     "title": "心流时间线",
