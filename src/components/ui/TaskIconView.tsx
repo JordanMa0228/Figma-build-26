@@ -3,8 +3,10 @@ import { CodingIcon } from './CodingIcon'
 import { ClassIcon } from './ClassIcon'
 import { EmailIcon } from './EmailIcon'
 import { MusicIcon } from './MusicIcon'
+import { LightbulbIcon } from './LightbulbIcon'
 
 const EMOJI_TO_ICON = {
+  '💡': LightbulbIcon,
   '💻': CodingIcon,
   '🃏': PokerIcon,
   '📚': ClassIcon,
