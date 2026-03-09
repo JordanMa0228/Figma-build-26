@@ -49,7 +49,7 @@ export function StrLineChart({
   const displaySubtitle = subtitle ?? t('strChart.defaultSubtitle')
   return (
     <Surface className="p-6">
-      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('strChart.title')}</p>
+      <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('strChart.title')}</p>
       <h3 className="mt-2 text-xl font-semibold text-slate-900">{displayTitle}</h3>
       <p className="mt-2 max-w-2xl text-sm text-slate-500">{displaySubtitle}</p>
 

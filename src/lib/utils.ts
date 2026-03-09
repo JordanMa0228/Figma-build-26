@@ -53,6 +53,13 @@ export function getStrNarrative(value: number) {
   return 'Slower subjective time'
 }
 
+export function getStrNarrativeKey(value: number): string {
+  if (value <= 0.7) return 'interpretation.deepFlow'
+  if (value <= 0.9) return 'interpretation.highFocus'
+  if (value <= 1.1) return 'interpretation.neutralPacing'
+  return 'interpretation.slowerSubjectiveTime'
+}
+
 export function getScoreTone(score: number): AccentTone {
   if (score >= 90) return 'focused'
   if (score >= 75) return 'cyan'
