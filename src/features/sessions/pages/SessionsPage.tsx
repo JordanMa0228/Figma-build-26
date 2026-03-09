@@ -81,7 +81,7 @@ export function SessionsPage() {
           </label>
 
           <div className="rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3">
-            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-slate-500">
+            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.08em] text-slate-500">
               <IconfontIcon name="sliders" size={14} className="text-slate-500" />
               {t('sessions.taskFilter')}
             </div>

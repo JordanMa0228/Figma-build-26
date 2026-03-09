@@ -111,7 +111,7 @@ export function SessionDetailPage() {
 
         <Surface className="space-y-5 p-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('sessions.annotations')}</p>
+            <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('sessions.annotations')}</p>
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('sessions.interpretiveLabels')}</h3>
             <p className="mt-2 text-sm text-slate-500">{t('sessions.annotationsDesc')}</p>
           </div>
@@ -125,7 +125,7 @@ export function SessionDetailPage() {
           </div>
 
           <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('sessions.analystNote')}</p>
+            <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('sessions.analystNote')}</p>
             <p className="mt-3 text-sm leading-7 text-slate-600">{displayNote}</p>
             <p className="mt-3 text-xs text-slate-500">
               {t('sessions.activeTags')}: {activeAnnotations.length ? activeAnnotations.map((k) => t(`annotations.${k}`)).join(', ') : t('common.none')}
@@ -137,7 +137,7 @@ export function SessionDetailPage() {
       <DataQualityPanel quality={session.dataQuality} />
 
       <Surface className="p-6">
-        <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('sessions.segmentTable')}</p>
+        <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('sessions.segmentTable')}</p>
         <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('sessions.detailedBreakdown')}</h3>
         <div className="mt-6 overflow-hidden rounded-3xl border border-slate-200">
           <table className="min-w-full divide-y divide-slate-200 text-left text-sm">

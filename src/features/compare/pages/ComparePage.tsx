@@ -34,7 +34,7 @@ function CompareColumn({
   return (
     <div className="space-y-4">
       <Surface className="p-5">
-        <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{title}</p>
+        <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{title}</p>
         <select
           value={value}
           onChange={(event) => onChange(event.target.value)}

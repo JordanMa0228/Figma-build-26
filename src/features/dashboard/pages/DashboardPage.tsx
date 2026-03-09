@@ -38,41 +38,41 @@ export function DashboardPage() {
         }
       />
 
-      <section className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
-        <Surface className="p-6">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <section className="grid gap-6 xl:grid-cols-[8fr_4fr]">
+        <Surface className="p-5">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-600">
                 <IconfontIcon name="star" size={12} className="text-blue-600" />
                 {t('dashboard.bestSession')}
               </div>
-              <h3 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-                <TaskIconView icon={data.topSession.taskIcon} size={36} className="mr-2 inline-block align-middle text-slate-700" />
+              <h3 className="mt-4 text-5xl font-semibold tracking-tight text-slate-900">
+                <TaskIconView icon={data.topSession.taskIcon} size={44} className="mr-3 inline-block align-middle text-slate-700" />
                 {t(`tasks.${data.topSession.taskLabel}`)}
               </h3>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">{topSessionNote}</p>
             </div>
-            <div className="grid grid-cols-2 gap-3 md:min-w-[320px]">
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.flowRatio')}</p>
+            <div className="grid grid-cols-2 gap-2.5 md:min-w-[300px]">
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3.5">
+                <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('dashboard.flowRatio')}</p>
                 <p className="mt-3 text-2xl font-semibold text-slate-900">{formatPercent(data.topSession.flowPercent)}</p>
               </div>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.avgSTR')}</p>
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3.5">
+                <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('dashboard.avgSTR')}</p>
                 <p className="mt-3 text-2xl font-semibold text-slate-900">{formatStr(data.topSession.avgSTR)}</p>
               </div>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.quality')}</p>
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3.5">
+                <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('dashboard.quality')}</p>
                 <p className="mt-3 text-2xl font-semibold text-slate-900">{data.topSession.qualityScore}</p>
               </div>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.interpretation')}</p>
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-3.5">
+                <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('dashboard.interpretation')}</p>
                 <p className="mt-3 text-base font-medium text-blue-600">{t(getStrNarrativeKey(data.topSession.avgSTR))}</p>
               </div>
             </div>
           </div>
 
-          <div className="mt-6 h-64">
+          <div className="mt-3 h-52">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data.weeklyFlowData}>
                 <defs>
@@ -90,14 +90,20 @@ export function DashboardPage() {
                   tickFormatter={(value) => t(`daysShort.${value}`)}
                 />
                 <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} />
-                <Tooltip />
+                <Tooltip
+                  contentStyle={{
+                    borderRadius: 16,
+                    borderColor: '#e2e8f0',
+                    boxShadow: '0 18px 45px rgba(15, 23, 42, 0.06)',
+                  }}
+                />
                 <Area type="monotone" dataKey="flowMin" stroke="#3b82f6" fill="url(#dashboardFlow)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </Surface>
 
-        <div className="grid gap-6">
+        <div className="grid gap-6 xl:max-w-xl">
           <MetricCard
             icon="clock"
             label={t('dashboard.lastSession')}
@@ -161,7 +167,7 @@ export function DashboardPage() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('dashboard.recentSessions')}</p>
+              <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('dashboard.recentSessions')}</p>
               <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('dashboard.mostRecentRecords')}</h3>
             </div>
             <Link to="/sessions" className="text-sm font-medium text-blue-600 hover:text-blue-700">
@@ -177,7 +183,7 @@ export function DashboardPage() {
 
         <div className="space-y-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('dashboard.insights')}</p>
+            <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('dashboard.insights')}</p>
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('dashboard.autoInsights')}</h3>
           </div>
           {data.insights.map((item) => (

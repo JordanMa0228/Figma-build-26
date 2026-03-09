@@ -3,6 +3,8 @@ import { CodingIcon } from './CodingIcon'
 import { ClassIcon } from './ClassIcon'
 import { EmailIcon } from './EmailIcon'
 import { MusicIcon } from './MusicIcon'
+import { LightbulbIcon } from './LightbulbIcon'
+import { MoonIcon } from './MoonIcon'
 
 const EMOJI_TO_ICON = {
   '💻': CodingIcon,
@@ -10,6 +12,8 @@ const EMOJI_TO_ICON = {
   '📚': ClassIcon,
   '📧': EmailIcon,
   '🎵': MusicIcon,
+  '💡': LightbulbIcon,
+  '🌙': MoonIcon,
 } as const
 
 interface TaskIconViewProps {

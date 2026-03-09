@@ -72,8 +72,8 @@
     "loading": "Loading...",
     "close": "Close",
     "none": "None",
-    "minutesFormat": "{{value}} min",
-    "min": "min",
+    "minutesFormat": "{{value}} minutes",
+    "min": "minutes",
     "minAbbr": "m",
     "all": "All"
   },

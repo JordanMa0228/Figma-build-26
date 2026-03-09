@@ -30,8 +30,11 @@ export function SessionListCard({ session }: SessionListCardProps) {
                   {t('sessions.flowPercentFormat', { percent: session.flowPercent })}
                 </StatusPill>
               </div>
-              <p className="mt-1 text-sm text-slate-500">
-                {format(new Date(session.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {session.startTime}–{session.endTime} · {t('common.minutesFormat', { value: session.durationMin })}
+              <p className="mt-1 text-xs text-slate-500 md:text-sm">
+                {format(new Date(session.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {session.startTime}-{session.endTime}
+              </p>
+              <p className="text-xs text-slate-500 md:text-sm">
+                {t('common.minutesFormat', { value: session.durationMin })}
               </p>
             </div>
           </div>
@@ -49,21 +52,23 @@ export function SessionListCard({ session }: SessionListCardProps) {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-3 xl:w-[28rem]">
+        <div className="grid gap-4 sm:grid-cols-3 xl:w-[34rem]">
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('sessions.state')}</p>
-            <p className="mt-2 text-lg font-semibold text-slate-900">{t(getStrNarrativeKey(session.avgSTR))}</p>
+            <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('sessions.state')}</p>
+            <p className="mt-2 text-sm font-semibold leading-snug text-slate-900">
+              {t(getStrNarrativeKey(session.avgSTR))}
+            </p>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('sessions.distractions')}</p>
+            <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('sessions.distractions')}</p>
             <p className="mt-2 text-lg font-semibold text-slate-900">{session.distractionEvents}</p>
           </div>
           <Link
             to={`/sessions/${session.id}`}
-            className="flex items-center justify-between rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-700 transition-colors hover:bg-blue-100"
+            className="flex items-start justify-between rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-700 transition-colors hover:bg-blue-100"
           >
             <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-blue-600">{t('sessions.detail')}</p>
+              <p className="text-xs font-medium uppercase tracking-[0.08em] text-blue-600">{t('sessions.detail')}</p>
               <p className="mt-1 text-sm font-semibold">{t('sessions.openReport')}</p>
             </div>
             <IconfontIcon name="star" size={18} className="text-blue-700" />
