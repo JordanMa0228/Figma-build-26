@@ -1,6 +1,7 @@
 import type { SessionRecord, TaskType } from '../../types/domain'
 import type { NewSessionSchema } from './newSessionSchema'
 import { TASK_ICONS } from './newSessionSchema'
+import { generateSessionStats } from './generateSessionStats'
 
 function parseTimeToMinutes(time: string): number {
   const [h, m] = time.split(':').map(Number)
@@ -22,22 +23,7 @@ export function buildSessionFromForm(data: NewSessionSchema, overrideTaskLabel?:
     startTime: data.startTime,
     endTime: data.endTime,
     durationMin,
-    avgSTR: 0.7,
-    peakSTR: 0.5,
-    flowPercent: 50,
-    longestFlowStreakMin: Math.floor(durationMin / 3),
-    dataQuality: { eye: 90, eeg: 88, hr: 92 },
-    flowTimeline: [
-      { startMin: 0, endMin: Math.floor(durationMin / 3), state: 'Neutral', avgSTR: 0.95 },
-      { startMin: Math.floor(durationMin / 3), endMin: durationMin, state: 'Flow', avgSTR: 0.55 },
-    ],
-    strTimeseries: [
-      { t: 0, str: 1.0 },
-      { t: Math.floor(durationMin / 2), str: 0.55 },
-      { t: durationMin, str: 0.98 },
-    ],
-    qualityScore: 90,
-    distractionEvents: 0,
+    ...generateSessionStats(durationMin),
     note: data.note || 'New session.',
   }
 }
