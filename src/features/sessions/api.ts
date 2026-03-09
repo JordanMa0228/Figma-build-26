@@ -67,7 +67,7 @@ function mapSession(raw: RawSession): SessionRecord {
     dataQuality,
     qualityScore: Math.round((dataQuality.eye + dataQuality.eeg + dataQuality.hr) / 3),
     distractionEvents: 0,
-    note: '',
+    note: (raw as any).note ?? '',
   }
 }
 
