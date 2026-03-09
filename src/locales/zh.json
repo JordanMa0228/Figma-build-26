@@ -270,7 +270,8 @@
     "deepFlow": "深度心流",
     "highFocus": "高度专注",
     "neutralPacing": "中性节奏",
-    "slowerSubjectiveTime": "主观时间感较慢"
+    "slowerSubjectiveTime": "主观时间感较慢",
+    "slowerTime": "时间感拉长"
   },
   "authErrors": {
     "invalidCredentials": "邮箱或密码错误",
