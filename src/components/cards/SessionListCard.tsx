@@ -50,7 +50,7 @@ export function SessionListCard({ session }: SessionListCardProps) {
         <div className="grid gap-4 sm:grid-cols-3 xl:w-[28rem]">
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('sessions.state')}</p>
-            <p className="mt-2 text-lg font-semibold text-slate-900">{getStrNarrative(session.avgSTR)}</p>
+            <p className="mt-2 text-lg font-semibold text-slate-900">{t(getStrNarrative(session.avgSTR))}</p>
           </div>
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('sessions.distractions')}</p>

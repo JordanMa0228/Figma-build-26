@@ -264,6 +264,12 @@
     "quickStats": "Estadísticas rápidas",
     "sessionsThisWeek": "Sesiones esta semana"
   },
+  "strNarrative": {
+    "deepFlow": "Flujo profundo",
+    "highFocus": "Alta concentración",
+    "neutralPacing": "Ritmo neutro",
+    "slowerSubjectiveTime": "Tiempo subjetivo más lento"
+  },
   "authErrors": {
     "invalidCredentials": "Correo o contraseña incorrectos",
     "registrationFailed": "Error al registrarse"

@@ -264,6 +264,12 @@
     "quickStats": "快捷统计",
     "sessionsThisWeek": "本周会话"
   },
+  "strNarrative": {
+    "deepFlow": "深度心流",
+    "highFocus": "高度专注",
+    "neutralPacing": "中性节奏",
+    "slowerSubjectiveTime": "主观时间感较慢"
+  },
   "authErrors": {
     "invalidCredentials": "邮箱或密码错误",
     "registrationFailed": "注册失败"
