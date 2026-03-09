@@ -1,8 +1,10 @@
-import { useForm, useWatch } from 'react-hook-form'
+import { useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 import { Modal } from '../../../components/ui/Modal'
+import { TaskIconView } from '../../../components/ui/TaskIconView'
 import { newSessionSchema, TASK_ICONS, type NewSessionSchema } from '../newSessionSchema'
 import { buildSessionFromForm } from '../buildSessionFromForm'
 import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
@@ -23,12 +25,14 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const addSession = useCreatedSessionsStore((s) => s.addSession)
+  const [taskMenuOpen, setTaskMenuOpen] = useState(false)
 
   const {
     register,
     handleSubmit,
     reset,
-    control,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<NewSessionSchema>({
     resolver: zodResolver(newSessionSchema),
@@ -95,6 +99,9 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
       onClose()
     }
   }
+
+  const taskOptions = useMemo(() => Object.keys(TASK_ICONS) as NewSessionSchema['taskLabel'][], [])
+  const selectedTask = watch('taskLabel')
 
   return (
     <Modal open={open} onClose={onClose} title="">
@@ -168,16 +175,41 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
             <label className="mb-1.5 block text-base font-bold uppercase tracking-[1px] text-slate-400">
               {t('sessions.taskType', 'Session type')}
             </label>
-            <select
-              className="h-[60px] w-full rounded-[14px] border border-slate-200 bg-white px-4 text-[18px] font-semibold text-slate-900 focus:border-2 focus:border-blue-500 focus:outline-none"
-              {...register('taskLabel')}
-            >
-              {(Object.keys(TASK_ICONS) as NewSessionSchema['taskLabel'][]).map((task) => (
-                <option key={task} value={task}>
-                  {TASK_ICONS[task]} {task}
-                </option>
-              ))}
-            </select>
+            <input type="hidden" {...register('taskLabel')} />
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setTaskMenuOpen((v) => !v)}
+                className="flex h-[60px] w-full items-center justify-between rounded-[14px] border border-slate-200 bg-white px-4 text-[18px] font-semibold text-slate-900 focus:border-2 focus:border-blue-500 focus:outline-none"
+              >
+                <span className="inline-flex items-center gap-3">
+                  <TaskIconView icon={TASK_ICONS[selectedTask]} size={22} className="text-slate-700" />
+                  {t(`tasks.${selectedTask}`)}
+                </span>
+                <span className="text-slate-400">▾</span>
+              </button>
+
+              {taskMenuOpen ? (
+                <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-panel">
+                  <div className="p-1">
+                    {taskOptions.map((task) => (
+                      <button
+                        key={task}
+                        type="button"
+                        onClick={() => {
+                          setValue('taskLabel', task, { shouldDirty: true, shouldTouch: true, shouldValidate: true })
+                          setTaskMenuOpen(false)
+                        }}
+                        className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-slate-800 hover:bg-slate-50"
+                      >
+                        <TaskIconView icon={TASK_ICONS[task]} size={20} className="text-slate-700" />
+                        <span className="font-semibold">{t(`tasks.${task}`)}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
             {errors.taskLabel && <p className="mt-1 text-sm text-red-600">{errors.taskLabel.message}</p>}
             {isCustom && (
               <input

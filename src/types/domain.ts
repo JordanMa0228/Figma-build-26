@@ -59,8 +59,8 @@ export interface InsightItem {
   id: number
   icon: string
   text: string
+  /** When set, UI should render t(textKey) instead of text. */
   textKey?: string
-  textValues?: Record<string, string | number>
 }
 
 export interface WeeklyFlowDatum {
