@@ -266,6 +266,15 @@
     "quickStats": "快捷统计",
     "sessionsThisWeek": "本周会话"
   },
+  "insights": {
+    "bestTask": "最佳任务：{{taskLabel}}，心流占比 {{flowPercent}}%",
+    "noSessions": "暂无会话记录",
+    "peakSTR": "本周峰值 STR：{{value}}",
+    "weeklyFlowTime": "本周总心流时间：{{value}} 分钟",
+    "bestTaskType": "最佳任务类型：{{taskType}}",
+    "avgSTR": "平均 STR：{{value}}",
+    "avgFlowRatio": "平均心流占比：{{value}}%"
+  },
   "authErrors": {
     "invalidCredentials": "邮箱或密码错误",
     "registrationFailed": "注册失败"

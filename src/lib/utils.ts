@@ -68,10 +68,10 @@ export function getScoreTone(score: number): AccentTone {
   return 'distracted'
 }
 
-export function getDeltaLabel(left: number, right: number, unit = '') {
+export function getDeltaLabel(left: number, right: number, unit = '', decimals = 2) {
   const delta = left - right
   const prefix = delta > 0 ? '+' : ''
-  return `${prefix}${delta.toFixed(2)}${unit}`
+  return `${prefix}${delta.toFixed(decimals)}${unit}`
 }
 
 export function safeDateFormat(

@@ -101,7 +101,14 @@
     "flow2x": "Entras en flujo 2,3 veces más en sesiones de análisis que de correo.",
     "strBottoms": "Tu STR toca fondo con más frecuencia entre las 21:00 y las 23:00.",
     "pokerHighest": "Las sesiones de póquer tienen el mayor ratio de flujo esta semana.",
-    "classDistraction": "Las sesiones de clase tienen la mayor carga de distracción y tiempo de recuperación."
+    "classDistraction": "Las sesiones de clase tienen la mayor carga de distracción y tiempo de recuperación.",
+    "bestTask": "Mejor tarea: {{taskLabel}} con {{flowPercent}}% de flujo",
+    "noSessions": "Sin sesiones aún",
+    "peakSTR": "STR pico esta semana: {{value}}",
+    "weeklyFlowTime": "Tiempo de flujo total esta semana: {{value}} min",
+    "bestTaskType": "Mejor tipo de tarea: {{taskType}}",
+    "avgSTR": "STR medio: {{value}}",
+    "avgFlowRatio": "Ratio de flujo medio: {{value}}%"
   },
   "annotations": {
     "veryFocused": "Muy concentrado",
