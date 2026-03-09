@@ -84,6 +84,25 @@ src/
   index.css
 ```
 
+## Deployment (Netlify)
+
+This is a Vite + React Router SPA. Netlify serves static files by default, which means refreshing or directly accessing a deep link (e.g. `/sessions/<id>`, `/compare`) returns a **404** because Netlify looks for a matching file on disk.
+
+The fix is `public/_redirects`:
+
+```
+/*    /index.html   200
+```
+
+This file is already included in the repo. Vite copies everything in `public/` to the build output (`dist/`), so Netlify will pick it up automatically on every deploy. The rule rewrites all paths to `index.html` with HTTP 200, letting React Router handle client-side navigation.
+
+**Affected routes now correctly served after refresh:**
+- `/sessions`
+- `/sessions/:id`
+- `/compare`
+
+> **API calls are not affected.** The frontend targets the backend via `VITE_API_BASE_URL` (an external domain), so there are no relative `/api/*` paths that could be incorrectly rewritten.
+
 ## Notes
 
 - **i18n**: `react-i18next` with locales in `src/locales/` (en, zh, es). Use **i18n Ally** in VS Code/Cursor for editing. Language is stored in `localStorage` and can be chosen on the home header or on login/register pages.
