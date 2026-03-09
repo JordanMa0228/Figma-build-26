@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { format } from 'date-fns'
+import type { Locale } from 'date-fns'
 import type { AccentTone, FlowState } from '../types/domain'
 
 export function cn(...inputs: ClassValue[]) {
@@ -71,5 +73,12 @@ export function getDeltaLabel(left: number, right: number, unit = '') {
   const delta = left - right
   const prefix = delta > 0 ? '+' : ''
   return `${prefix}${delta.toFixed(2)}${unit}`
+}
+
+export function safeFormat(dateStr: string | null | undefined, fmt: string, locale?: Locale): string {
+  if (!dateStr) return '—'
+  const d = new Date(dateStr)
+  if (isNaN(d.getTime())) return '—'
+  return format(d, fmt, { ...(locale && { locale }) })
 }
 

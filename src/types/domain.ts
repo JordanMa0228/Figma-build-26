@@ -43,7 +43,7 @@ export interface SessionRecord {
 }
 
 export interface DashboardSummary {
-  lastSessionDate: string
+  lastSessionDate: string | null
   totalFlowTimeMin: number
   avgSTR: number
   longestFlowStreakMin: number

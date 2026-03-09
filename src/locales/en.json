@@ -197,6 +197,7 @@
     "insights": "Insights",
     "autoInsights": "Auto-generated cues",
     "lastSessionDesc": "Latest sync-ready record available in the mock dataset.",
+    "noSessions": "No sessions yet",
     "flowTimeDescMetric": "Recovered deep-focus time from the most recent session.",
     "avgSTRDescMetric": "Lower values imply time compression and stronger immersion.",
     "totalSessionsDesc": "Tracked samples currently available to the frontend.",

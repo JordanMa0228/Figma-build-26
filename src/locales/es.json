@@ -197,6 +197,7 @@
     "insights": "Insights",
     "autoInsights": "Sugerencias automáticas",
     "lastSessionDesc": "Último registro listo para sincronizar en el conjunto de datos de prueba.",
+    "noSessions": "Sin sesiones aún",
     "flowTimeDescMetric": "Tiempo de enfoque profundo recuperado de la sesión más reciente.",
     "avgSTRDescMetric": "Valores más bajos indican compresión temporal y mayor inmersión.",
     "totalSessionsDesc": "Muestras rastreadas actualmente disponibles en el frontend.",

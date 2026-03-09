@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { useTranslation } from 'react-i18next'
-import { format } from 'date-fns'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { MetricCard } from '../../../components/ui/MetricCard'
 import { Surface } from '../../../components/ui/Surface'
@@ -10,7 +9,7 @@ import { InsightCard } from '../../../components/cards/InsightCard'
 import { SessionListCard } from '../../../components/cards/SessionListCard'
 import { FlowCalendar } from '../../../components/calendar/FlowCalendar'
 import { useDashboardData } from '../hooks'
-import { formatPercent, formatStr, getStrNarrativeKey } from '../../../lib/utils'
+import { formatPercent, formatStr, getStrNarrativeKey, safeFormat } from '../../../lib/utils'
 import { TaskIconView } from '../../../components/ui/TaskIconView'
 import { getDateLocale } from '../../../lib/date-locale'
 
@@ -107,7 +106,11 @@ export function DashboardPage() {
           <MetricCard
             icon="clock"
             label={t('dashboard.lastSession')}
-            value={format(new Date(data.summary.lastSessionDate), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })}
+            value={
+              data.summary.lastSessionDate
+                ? safeFormat(data.summary.lastSessionDate, 'MMM d, yyyy', getDateLocale(i18n.language))
+                : t('dashboard.noSessions', 'No sessions yet')
+            }
             description={t('dashboard.lastSessionDesc')}
             tone="cyan"
           />

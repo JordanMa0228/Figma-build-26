@@ -146,6 +146,7 @@
     "insights": "洞察",
     "autoInsights": "自动生成提示",
     "lastSessionDesc": "模拟数据集中最新可同步记录。",
+    "noSessions": "暂无会话",
     "flowTimeDescMetric": "最近一次会话中恢复的深度专注时长。",
     "avgSTRDescMetric": "数值越低表示时间压缩与沉浸感越强。",
     "totalSessionsDesc": "当前前端可用的已追踪样本数。",

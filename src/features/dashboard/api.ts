@@ -92,7 +92,7 @@ export async function getDashboardData(): Promise<{ success: true; data: Dashboa
     success: true,
     data: {
       summary: {
-        lastSessionDate: summary.lastSessionDate ?? '',
+        lastSessionDate: summary.lastSessionDate ?? null,
         totalFlowTimeMin: summary.weeklyFlowTimeMin,
         avgSTR: summary.avgSTRThisWeek,
         longestFlowStreakMin: summary.todayLongestStreakMin,
