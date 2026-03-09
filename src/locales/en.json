@@ -71,7 +71,9 @@
     "cancel": "Cancel",
     "loading": "Loading...",
     "close": "Close",
-    "none": "None"
+    "none": "None",
+    "minAbbr": "m",
+    "minutesFormat": "{{value}} min flow"
   },
   "sessions": {
     "newSession": "New session",
