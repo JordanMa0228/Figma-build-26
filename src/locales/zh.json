@@ -201,7 +201,9 @@
     "qualityDelta": "质量差值",
     "qualityDeltaDesc": "所选会话对的传感器完整性之差。",
     "sessionA": "会话 A",
-    "sessionB": "会话 B"
+    "sessionB": "会话 B",
+    "selectSession": "选择会话…",
+    "selectSessionPrompt": "选择一个会话以开始"
   },
   "trends": {
     "eyebrow": "分析",

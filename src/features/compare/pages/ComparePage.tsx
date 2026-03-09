@@ -27,9 +27,8 @@ function CompareColumn({
   const { t, i18n } = useTranslation()
   const session = sessions.find((item) => item.id === value)
 
-  if (!session) return null
-  const displayNote = session.note.startsWith('sessionNotes.') ? t(session.note) : session.note
-  const displayDate = format(new Date(session.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })
+  const displayNote = session ? (session.note.startsWith('sessionNotes.') ? t(session.note) : session.note) : ''
+  const displayDate = session ? format(new Date(session.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) }) : ''
 
   return (
     <div className="space-y-4">
@@ -40,23 +39,34 @@ function CompareColumn({
           onChange={(event) => onChange(event.target.value)}
           className="mt-4 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none"
         >
+          <option value="" disabled>{t('compare.selectSession')}</option>
           {sessions.map((item) => (
             <option key={item.id} value={item.id}>
               {t(`tasks.${item.taskLabel}`)} · {format(new Date(item.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {t('common.minutesFormat', { value: item.durationMin })}
             </option>
           ))}
         </select>
-        <div className="mt-4 rounded-3xl border border-slate-200 bg-slate-50 p-4">
-          <p className="text-lg font-semibold text-slate-900">
-            <TaskIconView icon={session.taskIcon} size={22} className="mr-2 inline-block align-middle text-slate-700" />
-            {t(`tasks.${session.taskLabel}`)}
-          </p>
-          <p className="mt-2 text-sm text-slate-500">{displayDate} · {displayNote}</p>
-        </div>
+        {session ? (
+          <div className="mt-4 rounded-3xl border border-slate-200 bg-slate-50 p-4">
+            <p className="text-lg font-semibold text-slate-900">
+              <TaskIconView icon={session.taskIcon} size={22} className="mr-2 inline-block align-middle text-slate-700" />
+              {t(`tasks.${session.taskLabel}`)}
+            </p>
+            <p className="mt-2 text-sm text-slate-500">{displayDate} · {displayNote}</p>
+          </div>
+        ) : (
+          <div className="mt-4 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-center text-sm text-slate-400">
+            {t('compare.selectSessionPrompt')}
+          </div>
+        )}
       </Surface>
 
-      <FlowTimelineChart timeline={session.flowTimeline} durationMin={session.durationMin} />
-      <StrLineChart timeseries={session.strTimeseries} />
+      {session && (
+        <>
+          <FlowTimelineChart timeline={session.flowTimeline} durationMin={session.durationMin} />
+          <StrLineChart timeseries={session.strTimeseries} />
+        </>
+      )}
     </div>
   )
 }
@@ -72,8 +82,6 @@ export function ComparePage() {
   const leftSession = sessions.find((item) => item.id === compareLeftId)
   const rightSession = sessions.find((item) => item.id === compareRightId)
 
-  if (!leftSession || !rightSession) return null
-
   return (
     <div className="space-y-6">
       <PageHeader
@@ -82,29 +90,31 @@ export function ComparePage() {
         description={t('compare.description')}
       />
 
-      <section className="grid gap-4 md:grid-cols-3">
-        <MetricCard
-          icon="compare"
-          label={t('compare.flowDelta')}
-          value={getDeltaLabel(leftSession.flowPercent, rightSession.flowPercent, '%')}
-          description={t('compare.flowDeltaDesc')}
-          tone="flow"
-        />
-        <MetricCard
-          icon="compare"
-          label={t('compare.strDelta')}
-          value={getDeltaLabel(leftSession.avgSTR, rightSession.avgSTR)}
-          description={t('compare.strDeltaDesc')}
-          tone="cyan"
-        />
-        <MetricCard
-          icon="compare"
-          label={t('compare.qualityDelta')}
-          value={getDeltaLabel(leftSession.qualityScore, rightSession.qualityScore)}
-          description={t('compare.qualityDeltaDesc')}
-          tone="focused"
-        />
-      </section>
+      {leftSession && rightSession && (
+        <section className="grid gap-4 md:grid-cols-3">
+          <MetricCard
+            icon="compare"
+            label={t('compare.flowDelta')}
+            value={getDeltaLabel(leftSession.flowPercent, rightSession.flowPercent, '%')}
+            description={t('compare.flowDeltaDesc')}
+            tone="flow"
+          />
+          <MetricCard
+            icon="compare"
+            label={t('compare.strDelta')}
+            value={getDeltaLabel(leftSession.avgSTR, rightSession.avgSTR)}
+            description={t('compare.strDeltaDesc')}
+            tone="cyan"
+          />
+          <MetricCard
+            icon="compare"
+            label={t('compare.qualityDelta')}
+            value={getDeltaLabel(leftSession.qualityScore, rightSession.qualityScore)}
+            description={t('compare.qualityDeltaDesc')}
+            tone="focused"
+          />
+        </section>
+      )}
 
       <div className="grid gap-6 xl:grid-cols-[1fr_auto_1fr]">
         <CompareColumn title={t('compare.sessionA')} value={compareLeftId} onChange={setCompareLeftId} sessions={sessions} />

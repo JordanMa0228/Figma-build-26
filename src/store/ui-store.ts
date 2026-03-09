@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import { comparisonDefaults } from '../data/mock-data'
 import type { TaskFilter } from '../types/domain'
 
 interface UiStore {
@@ -16,8 +15,8 @@ interface UiStore {
 export const useUiStore = create<UiStore>((set) => ({
   sessionFilter: 'All',
   sessionSearch: '',
-  compareLeftId: comparisonDefaults.leftId,
-  compareRightId: comparisonDefaults.rightId,
+  compareLeftId: '',
+  compareRightId: '',
   setSessionFilter: (value) => set({ sessionFilter: value }),
   setSessionSearch: (value) => set({ sessionSearch: value }),
   setCompareLeftId: (value) => set({ compareLeftId: value }),
