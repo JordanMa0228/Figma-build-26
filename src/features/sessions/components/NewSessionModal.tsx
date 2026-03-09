@@ -9,10 +9,16 @@ import { newSessionSchema, TASK_ICONS, type NewSessionSchema } from '../newSessi
 import { buildSessionFromForm } from '../buildSessionFromForm'
 import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
 import { track } from '../../../lib/tracking'
+import { createSession } from '../api'
 
 interface NewSessionModalProps {
   open: boolean
   onClose: () => void
+}
+
+function parseTimeToMinutes(time: string): number {
+  const [h, m] = time.split(':').map(Number)
+  return (h ?? 0) * 60 + (m ?? 0)
 }
 
 export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
@@ -39,13 +45,53 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
     },
   })
 
-  const onSubmit = (data: NewSessionSchema) => {
-    const session = buildSessionFromForm(data)
-    addSession(session)
-    queryClient.invalidateQueries({ queryKey: ['sessions'] })
-    track('session_create', { sessionId: session.id, taskLabel: session.taskLabel })
-    reset()
-    onClose()
+  const onSubmit = async (data: NewSessionSchema) => {
+    const resolvedTaskLabel = data.taskLabel
+    const durationMin =
+      parseTimeToMinutes(data.endTime) - parseTimeToMinutes(data.startTime) || 60
+
+    try {
+      const result = await createSession({
+        taskLabel: resolvedTaskLabel,
+        date: data.date,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        durationMin,
+        avgStr: 0.75,
+        flowRatio: 0.6,
+        peakStr: 0.95,
+        longestFlowStreakMin: Math.floor(durationMin * 0.4),
+        flowIntervals: [
+          { startMin: 0, endMin: Math.floor(durationMin / 3), state: 'Neutral', avgSTR: 0.95 },
+          { startMin: Math.floor(durationMin / 3), endMin: durationMin, state: 'Flow', avgSTR: 0.55 },
+        ],
+        strTimeseries: [
+          { t: 0, str: 1.0 },
+          { t: Math.floor(durationMin / 2), str: 0.55 },
+          { t: durationMin, str: 0.98 },
+        ],
+        quality: { eye: 90, eeg: 88, hr: 92 },
+      })
+
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['sessions'] }),
+        queryClient.invalidateQueries({ queryKey: ['dashboard'] }),
+      ])
+      track('session_create', { sessionId: result.data.id, taskLabel: result.data.taskLabel })
+      reset()
+      onClose()
+    } catch (error) {
+      console.error('[NewSessionModal] API save failed, falling back to local store:', error)
+      const session = buildSessionFromForm(data)
+      addSession(session)
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['sessions'] }),
+        queryClient.invalidateQueries({ queryKey: ['dashboard'] }),
+      ])
+      track('session_create', { sessionId: session.id, taskLabel: session.taskLabel })
+      reset()
+      onClose()
+    }
   }
 
   const taskOptions = useMemo(() => Object.keys(TASK_ICONS) as NewSessionSchema['taskLabel'][], [])
