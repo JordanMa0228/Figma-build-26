@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IconfontIcon } from '../../../components/ui/IconfontIcon'
 import { format } from 'date-fns'
-import { annotationOptions } from '../../../data/mock-data'
+import { annotationOptionKeys } from '../../../data/mock-data'
 import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
 import { useSessionDetail } from '../hooks'
 import { PageHeader } from '../../../components/ui/PageHeader'
@@ -13,17 +13,20 @@ import { FilterChip } from '../../../components/ui/FilterChip'
 import { FlowTimelineChart } from '../../../components/charts/FlowTimelineChart'
 import { StrLineChart } from '../../../components/charts/StrLineChart'
 import { DataQualityPanel } from '../../../components/cards/DataQualityPanel'
-import { formatMinutes, formatStr, getStateTone } from '../../../lib/utils'
+import { formatStr, getStateTone } from '../../../lib/utils'
 import { StatusPill } from '../../../components/ui/StatusPill'
+import { TaskIconView } from '../../../components/ui/TaskIconView'
+import { getDateLocale } from '../../../lib/date-locale'
 
 export function SessionDetailPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { id } = useParams()
   const navigate = useNavigate()
   const createdSession = useCreatedSessionsStore((s) => (id ? s.sessions.find((x) => x.id === id) : undefined))
   const { data: apiSession } = useSessionDetail(createdSession ? undefined : id)
   const session = createdSession ?? apiSession
   const [activeAnnotations, setActiveAnnotations] = useState<string[]>([])
+  const displayNote = session?.note?.startsWith('sessionNotes.') ? t(session.note) : session?.note ?? ''
 
   const totalFlowMinutes = useMemo(() => {
     if (!session) return 0
@@ -57,8 +60,13 @@ export function SessionDetailPage() {
 
       <PageHeader
         eyebrow={t('sessions.sessionReport')}
-        title={`${session.taskIcon} ${session.taskLabel} ${t('sessions.deepDive')}`}
-        description={`${format(new Date(session.date), 'EEEE, MMM d, yyyy')} · ${session.startTime} to ${session.endTime} · ${session.note}`}
+        title={
+          <>
+            <TaskIconView icon={session.taskIcon} size={28} className="mr-2 inline-block align-middle text-slate-700" />
+            {t(`tasks.${session.taskLabel}`)} {t('sessions.deepDive')}
+          </>
+        }
+        description={`${format(new Date(session.date), 'EEEE, MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · ${session.startTime}–${session.endTime} · ${displayNote}`}
         actions={<StatusPill tone={session.flowPercent >= 60 ? 'flow' : 'neutral'}>{t('sessions.flowPercentFormat', { percent: session.flowPercent })}</StatusPill>}
       />
 
@@ -66,7 +74,7 @@ export function SessionDetailPage() {
         <MetricCard
           icon="star"
           label={t('dashboard.flowTime')}
-          value={formatMinutes(totalFlowMinutes)}
+          value={t('common.minutesFormat', { value: totalFlowMinutes })}
           description={`${session.flowPercent}% ${t('sessions.flowTimeDesc')}`}
           tone="flow"
         />
@@ -87,7 +95,7 @@ export function SessionDetailPage() {
         <MetricCard
           icon="tag"
           label={t('dashboard.longestStreak')}
-          value={formatMinutes(session.longestFlowStreakMin)}
+          value={t('common.minutesFormat', { value: session.longestFlowStreakMin })}
           description={t('sessions.longestStreakDesc')}
           tone="neutral"
         />
@@ -109,18 +117,18 @@ export function SessionDetailPage() {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {annotationOptions.map((item) => (
-              <FilterChip key={item} active={activeAnnotations.includes(item)} onClick={() => toggleAnnotation(item)}>
-                {item}
+            {annotationOptionKeys.map((key) => (
+              <FilterChip key={key} active={activeAnnotations.includes(key)} onClick={() => toggleAnnotation(key)}>
+                {t(`annotations.${key}`)}
               </FilterChip>
             ))}
           </div>
 
           <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('sessions.analystNote')}</p>
-            <p className="mt-3 text-sm leading-7 text-slate-600">{session.note}</p>
+            <p className="mt-3 text-sm leading-7 text-slate-600">{displayNote}</p>
             <p className="mt-3 text-xs text-slate-500">
-              {t('sessions.activeTags')}: {activeAnnotations.length ? activeAnnotations.join(', ') : t('common.none')}
+              {t('sessions.activeTags')}: {activeAnnotations.length ? activeAnnotations.map((k) => t(`annotations.${k}`)).join(', ') : t('common.none')}
             </p>
           </div>
         </Surface>
@@ -147,13 +155,13 @@ export function SessionDetailPage() {
                 <tr key={`${segment.state}-${index}`} className="bg-white">
                   <td className="px-4 py-3 text-slate-900">#{index + 1}</td>
                   <td className="px-4 py-3 text-slate-600">
-                    {segment.startMin}m to {segment.endMin}m
+                    {segment.startMin}{t('common.minAbbr')} – {segment.endMin}{t('common.minAbbr')}
                   </td>
                   <td className="px-4 py-3">
-                    <StatusPill tone={getStateTone(segment.state)}>{segment.state}</StatusPill>
+                    <StatusPill tone={getStateTone(segment.state)}>{t(`flowTimelineLegend.${segment.state}`)}</StatusPill>
                   </td>
                   <td className="px-4 py-3 text-slate-600">{segment.avgSTR.toFixed(2)}</td>
-                  <td className="px-4 py-3 text-slate-600">{segment.endMin - segment.startMin}m</td>
+                  <td className="px-4 py-3 text-slate-600">{segment.endMin - segment.startMin}{t('common.minAbbr')}</td>
                 </tr>
               ))}
             </tbody>

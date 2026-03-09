@@ -71,7 +71,59 @@
     "cancel": "Cancelar",
     "loading": "Cargando…",
     "close": "Cerrar",
-    "none": "Ninguno"
+    "none": "Ninguno",
+    "minutesFormat": "{{value}} min",
+    "min": "min",
+    "minAbbr": "m",
+    "all": "Todos"
+  },
+  "tasks": {
+    "Coding": "Análisis técnico",
+    "Poker": "Póquer",
+    "Class": "Clase",
+    "Music": "Música",
+    "Email": "Correo"
+  },
+  "interpretation": {
+    "deepFlow": "Flujo profundo",
+    "highFocus": "Alta concentración",
+    "neutralPacing": "Ritmo neutro",
+    "slowerSubjectiveTime": "Tiempo subjetivo más lento"
+  },
+  "sessionNotes": {
+    "Coding": "Inmersión estable tras el calentamiento, con mínima interrupción.",
+    "Poker": "Caída rápida del STR con intervalos de flujo de alta confianza.",
+    "Class": "Ventanas de flujo cortas y frágiles, con tramos distraídos largos.",
+    "Music": "Ritmo suave con buen enfoque nocturno y latencia de recuperación moderada.",
+    "Email": "Alto cambio de contexto y sensación de tiempo subjetivo lento."
+  },
+  "insights": {
+    "flow2x": "Entras en flujo 2,3 veces más en sesiones de análisis que de correo.",
+    "strBottoms": "Tu STR toca fondo con más frecuencia entre las 21:00 y las 23:00.",
+    "pokerHighest": "Las sesiones de póquer tienen el mayor ratio de flujo esta semana.",
+    "classDistraction": "Las sesiones de clase tienen la mayor carga de distracción y tiempo de recuperación."
+  },
+  "annotations": {
+    "veryFocused": "Muy concentrado",
+    "distracted": "Distraído",
+    "flowZone": "Zona de flujo",
+    "tired": "Cansado",
+    "energized": "Energizado"
+  },
+  "period": {
+    "Morning": "Mañana",
+    "Afternoon": "Tarde",
+    "Evening": "Noche",
+    "Night": "Noche"
+  },
+  "daysShort": {
+    "Mon": "Lun",
+    "Tue": "Mar",
+    "Wed": "Mié",
+    "Thu": "Jue",
+    "Fri": "Vie",
+    "Sat": "Sáb",
+    "Sun": "Dom"
   },
   "sessions": {
     "newSession": "Nueva sesión",
@@ -80,7 +132,6 @@
     "warehouseTitle": "Almacén de sesiones",
     "warehouseDesc": "Vista densa de cada muestra. Filtros, búsqueda y etiquetas.",
     "taskType": "Tipo de tarea",
-    "customTaskPlaceholder": "Ingresa el nombre de la tarea...",
     "date": "Fecha",
     "startTime": "Hora inicio",
     "endTime": "Hora fin",
