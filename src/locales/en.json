@@ -264,6 +264,12 @@
     "quickStats": "Quick stats",
     "sessionsThisWeek": "Sessions this week"
   },
+  "strNarrative": {
+    "deepFlow": "Deep flow",
+    "highFocus": "High focus",
+    "neutralPacing": "Neutral pacing",
+    "slowerSubjectiveTime": "Slower subjective time"
+  },
   "authErrors": {
     "invalidCredentials": "Invalid email or password",
     "registrationFailed": "Registration failed"
