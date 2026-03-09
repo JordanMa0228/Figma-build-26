@@ -294,6 +294,8 @@ const sessionNotes: Record<TaskType, string> = {
 export const taskOptions: TaskType[] = ['Coding', 'Poker', 'Class', 'Music', 'Email']
 export const taskFilterOptions: TaskFilter[] = ['All', ...taskOptions]
 export const annotationOptions = ['Very focused', 'Distracted', 'Flow zone', 'Tired', 'Energized']
+/** i18n keys for annotation chips (use with t(`annotations.${key}`)). */
+export const annotationOptionKeys = ['veryFocused', 'distracted', 'flowZone', 'tired', 'energized'] as const
 
 export const sessions: SessionRecord[] = baseSessions.map((session) => {
   const qualityScore = Math.round(average([session.dataQuality.eye, session.dataQuality.eeg, session.dataQuality.hr]))
