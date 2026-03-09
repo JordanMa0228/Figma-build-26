@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IconfontIcon } from '../../../components/ui/IconfontIcon'
-import { format } from 'date-fns'
 import { annotationOptionKeys } from '../../../data/mock-data'
 import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
 import { useSessionDetail } from '../hooks'
@@ -13,7 +12,7 @@ import { FilterChip } from '../../../components/ui/FilterChip'
 import { FlowTimelineChart } from '../../../components/charts/FlowTimelineChart'
 import { StrLineChart } from '../../../components/charts/StrLineChart'
 import { DataQualityPanel } from '../../../components/cards/DataQualityPanel'
-import { formatStr, getStateTone } from '../../../lib/utils'
+import { formatStr, getStateTone, safeFormat } from '../../../lib/utils'
 import { StatusPill } from '../../../components/ui/StatusPill'
 import { TaskIconView } from '../../../components/ui/TaskIconView'
 import { getDateLocale } from '../../../lib/date-locale'
@@ -66,7 +65,7 @@ export function SessionDetailPage() {
             {t(`tasks.${session.taskLabel}`)} {t('sessions.deepDive')}
           </>
         }
-        description={`${format(new Date(session.date), 'EEEE, MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · ${session.startTime}–${session.endTime} · ${displayNote}`}
+        description={`${safeFormat(session.date, 'EEEE, MMM d, yyyy', getDateLocale(i18n.language))} · ${session.startTime}–${session.endTime} · ${displayNote}`}
         actions={<StatusPill tone={session.flowPercent >= 60 ? 'flow' : 'neutral'}>{t('sessions.flowPercentFormat', { percent: session.flowPercent })}</StatusPill>}
       />
 
