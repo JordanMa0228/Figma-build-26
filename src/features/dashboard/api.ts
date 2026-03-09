@@ -8,7 +8,7 @@ export async function getDashboardData(): Promise<{ success: true; data: Dashboa
     api.get<Record<string, unknown>>('/sessions/summary').catch(() => ({ data: {} as Record<string, unknown> })),
   ])
 
-  const sessions = sessionsRes.data || []
+  const sessions = (sessionsRes.data || []).map((s: any) => ({ ...s, note: s.note ?? '' }))
   const summary = summaryRes.data || {}
 
   const dashboardSummary: DashboardSummary = {

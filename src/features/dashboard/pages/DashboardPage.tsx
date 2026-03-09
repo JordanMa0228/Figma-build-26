@@ -19,7 +19,7 @@ export function DashboardPage() {
   const { data } = useDashboardData()
 
   if (!data) return null
-  const topSessionNote = data.topSession.note.startsWith('sessionNotes.') ? t(data.topSession.note) : data.topSession.note
+  const topSessionNote = data.topSession?.note?.startsWith('sessionNotes.') ? t(data.topSession?.note ?? '') : data.topSession?.note ?? ''
 
   return (
     <div className="space-y-6">
