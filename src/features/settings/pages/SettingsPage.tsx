@@ -83,7 +83,7 @@ export function SettingsPage() {
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <Surface className="space-y-5 p-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('settings.sensorPermissions')}</p>
+          <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('settings.sensorPermissions')}</p>
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('settings.signalSources')}</h3>
           </div>
 
@@ -114,7 +114,7 @@ export function SettingsPage() {
 
         <div className="grid gap-6 xl:grid-cols-2">
           <Surface className="p-6">
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('settings.qualityThreshold')}</p>
+          <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('settings.qualityThreshold')}</p>
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('settings.qualityThresholdTitle')}</h3>
             <p className="mt-2 text-sm text-slate-500">{t('settings.qualityThresholdDesc')}</p>
             <Controller
@@ -143,7 +143,7 @@ export function SettingsPage() {
           </Surface>
 
           <Surface className="p-6">
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('settings.flowSensitivity')}</p>
+          <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('settings.flowSensitivity')}</p>
             <h3 className="mt-2 text-xl font-semibold text-white">{t('settings.classifierStrictness')}</h3>
             <div className="mt-6 flex flex-wrap gap-2">
               {sensitivityOptions.map((option) => (
@@ -168,7 +168,7 @@ export function SettingsPage() {
         <div className="grid gap-6 xl:grid-cols-2">
           <Surface className="space-y-5 p-6">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('settings.storageMode')}</p>
+              <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('settings.storageMode')}</p>
               <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('settings.privacyControls')}</h3>
             </div>
 
@@ -207,7 +207,7 @@ export function SettingsPage() {
           </Surface>
 
           <Surface className="p-6">
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{t('settings.formSnapshotTitle')}</p>
+          <p className="text-xs uppercase tracking-[0.08em] text-slate-400">{t('settings.formSnapshotTitle')}</p>
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('settings.formSnapshot')}</h3>
             <p className="mt-2 text-sm text-slate-500">{t('settings.formSnapshotDesc')}</p>
             <pre className="mt-6 overflow-auto rounded-3xl border border-slate-200 bg-slate-50 p-4 text-xs leading-6 text-slate-600">
