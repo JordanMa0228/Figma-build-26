@@ -101,7 +101,13 @@
     "flow2x": "在技术分析会话中进入心流的频率比邮件会话高 2.3 倍。",
     "strBottoms": "STR 最常在晚上 9 点到 11 点之间触底。",
     "pokerHighest": "本周扑克会话的平均心流占比最高。",
-    "classDistraction": "课堂会话的分心负荷与恢复时间最高。"
+    "classDistraction": "课堂会话的分心负荷与恢复时间最高。",
+    "bestTask": "最佳任务：{{task}}，心流占比 {{percent}}%",
+    "bestTaskType": "最佳任务类型：{{task}}",
+    "peakSTR": "本周峰值 STR：{{value}}",
+    "avgSTR": "平均 STR：{{value}}",
+    "totalFlowTime": "本周心流总时长：{{value}} 分钟",
+    "avgFlowRatio": "平均心流占比：{{percent}}%"
   },
   "annotations": {
     "veryFocused": "非常专注",
