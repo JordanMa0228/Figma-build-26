@@ -46,7 +46,7 @@ export function TrendsPage() {
         <MetricCard
           icon="star"
           label={t('trends.bestTaskLabel')}
-          value={t(`tasks.${data.overview.bestTaskType}`)}
+          value={data.overview.bestTaskType}
           description={t('trends.bestTaskDesc')}
           tone="focused"
         />
@@ -60,13 +60,7 @@ export function TrendsPage() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.weeklyFlowData}>
                 <CartesianGrid stroke="#eef2f7" strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="day"
-                  tick={{ fill: '#94a3b8', fontSize: 11 }}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => t(`daysShort.${value}`)}
-                />
+                <XAxis dataKey="day" tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} />
                 <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} />
                 <Tooltip />
                 <Bar dataKey="flowMin" radius={[10, 10, 0, 0]}>
@@ -94,7 +88,6 @@ export function TrendsPage() {
                   tick={{ fill: '#94a3b8', fontSize: 11 }}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(value) => t(`tasks.${value}`)}
                 />
                 <Tooltip />
                 <Bar dataKey="avgSTR" radius={[0, 10, 10, 0]}>
@@ -116,13 +109,7 @@ export function TrendsPage() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.focusTimeOfDay}>
                 <CartesianGrid stroke="#eef2f7" strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="period"
-                  tick={{ fill: '#94a3b8', fontSize: 11 }}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => t(`period.${value}`)}
-                />
+                <XAxis dataKey="period" tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} />
                 <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} />
                 <Tooltip />
                 <Bar dataKey="avgFlow" radius={[10, 10, 0, 0]}>
@@ -141,7 +128,7 @@ export function TrendsPage() {
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('trends.narrativeTakeaways')}</h3>
           </div>
           {data.insights.map((item) => (
-            <InsightCard key={item.id} icon={item.icon} text={item.text} textKey={item.textKey} />
+            <InsightCard key={item.id} icon={item.icon} text={item.text} />
           ))}
         </div>
       </section>

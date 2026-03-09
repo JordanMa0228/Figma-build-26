@@ -71,59 +71,7 @@
     "cancel": "取消",
     "loading": "加载中…",
     "close": "关闭",
-    "none": "无",
-    "minutesFormat": "{{value}} 分钟",
-    "min": "分钟",
-    "minAbbr": "分",
-    "all": "全部"
-  },
-  "tasks": {
-    "Coding": "技术分析",
-    "Poker": "扑克",
-    "Class": "课堂",
-    "Music": "音乐",
-    "Email": "邮件"
-  },
-  "interpretation": {
-    "deepFlow": "深度心流",
-    "highFocus": "高度专注",
-    "neutralPacing": "中性节奏",
-    "slowerSubjectiveTime": "主观时间变慢"
-  },
-  "sessionNotes": {
-    "Coding": "热身段落后稳定沉浸，几乎无中断。",
-    "Poker": "STR 快速下降，并维持高置信度心流区间。",
-    "Class": "心流窗口较短且不稳定，分心时段较长。",
-    "Music": "节奏平稳，晚间专注度高，恢复略有延迟。",
-    "Email": "高情境切换，主观时间拖沓感明显。"
-  },
-  "insights": {
-    "flow2x": "在技术分析会话中进入心流的频率比邮件会话高 2.3 倍。",
-    "strBottoms": "STR 最常在晚上 9 点到 11 点之间触底。",
-    "pokerHighest": "本周扑克会话的平均心流占比最高。",
-    "classDistraction": "课堂会话的分心负荷与恢复时间最高。"
-  },
-  "annotations": {
-    "veryFocused": "非常专注",
-    "distracted": "分心",
-    "flowZone": "心流区",
-    "tired": "疲惫",
-    "energized": "精力充沛"
-  },
-  "period": {
-    "Morning": "早晨",
-    "Afternoon": "下午",
-    "Evening": "傍晚",
-    "Night": "夜间"
-  },
-  "daysShort": {
-    "Mon": "周一",
-    "Tue": "周二",
-    "Wed": "周三",
-    "Thu": "周四",
-    "Fri": "周五",
-    "Sat": "周六",
-    "Sun": "周日"
+    "none": "无"
   },
   "sessions": {
     "newSession": "新建会话",
@@ -132,6 +80,7 @@
     "warehouseTitle": "可搜索会话库",
     "warehouseDesc": "更密集的样本视图，支持筛选、搜索与标签。",
     "taskType": "任务类型",
+    "customTaskPlaceholder": "输入任务名称...",
     "date": "日期",
     "startTime": "开始时间",
     "endTime": "结束时间",

@@ -14,7 +14,7 @@ import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
 import { useSessionsData } from '../hooks'
 
 export function SessionsPage() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [newSessionOpen, setNewSessionOpen] = useState(false)
   const { data: apiSessions = [] } = useSessionsData()
   const createdSessions = useCreatedSessionsStore((s) => s.sessions)
@@ -31,20 +31,14 @@ export function SessionsPage() {
     return sessions.filter((session) => {
       const matchesFilter = sessionFilter === 'All' || session.taskLabel === sessionFilter
       const searchValue = sessionSearch.toLowerCase()
-      const translatedTaskLabel = t(`tasks.${session.taskLabel}`).toLowerCase()
-      const translatedNote = t(`sessionNotes.${session.taskLabel}`).toLowerCase()
-      const displayNote = session.note.startsWith('sessionNotes.') ? t(session.note).toLowerCase() : session.note.toLowerCase()
       const matchesSearch =
         session.taskLabel.toLowerCase().includes(searchValue) ||
-        translatedTaskLabel.includes(searchValue) ||
         session.note.toLowerCase().includes(searchValue) ||
-        displayNote.includes(searchValue) ||
-        translatedNote.includes(searchValue) ||
         session.date.includes(searchValue)
 
       return matchesFilter && matchesSearch
     })
-  }, [i18n.language, sessionFilter, sessionSearch, sessions, t])
+  }, [sessionFilter, sessionSearch, sessions])
 
   const avgFlow = Math.round(average(filteredSessions.map((session) => session.flowPercent)))
   const avgQuality = Math.round(average(filteredSessions.map((session) => session.qualityScore)))
@@ -88,7 +82,7 @@ export function SessionsPage() {
             <div className="mt-3 flex flex-wrap gap-2">
               {taskFilterOptions.map((option) => (
                 <FilterChip key={option} active={sessionFilter === option} onClick={() => setSessionFilter(option)}>
-                  {option === 'All' ? t('common.all') : t(`tasks.${option}`)}
+                  {option}
                 </FilterChip>
               ))}
             </div>
