@@ -71,7 +71,59 @@
     "cancel": "Cancel",
     "loading": "Loading...",
     "close": "Close",
-    "none": "None"
+    "none": "None",
+    "minutesFormat": "{{value}} min",
+    "min": "min",
+    "minAbbr": "m",
+    "all": "All"
+  },
+  "tasks": {
+    "Coding": "Coding",
+    "Poker": "Poker",
+    "Class": "Class",
+    "Music": "Music",
+    "Email": "Email"
+  },
+  "interpretation": {
+    "deepFlow": "Deep flow",
+    "highFocus": "High focus",
+    "neutralPacing": "Neutral pacing",
+    "slowerSubjectiveTime": "Slower subjective time"
+  },
+  "sessionNotes": {
+    "Coding": "Stable immersion after the warm-up segment with minimal interruption.",
+    "Poker": "Fast drop in STR with sustained high-confidence flow intervals.",
+    "Class": "Flow windows are short and fragile, with longer distracted stretches.",
+    "Music": "Smooth pacing with strong evening focus and moderate recovery latency.",
+    "Email": "High context switching profile with elevated subjective time drag."
+  },
+  "insights": {
+    "flow2x": "You enter Flow 2.3x more during Coding than Email sessions.",
+    "strBottoms": "Your STR bottoms out most often between 9 PM and 11 PM.",
+    "pokerHighest": "Poker sessions show the highest average flow ratio this week.",
+    "classDistraction": "Class sessions carry the highest distraction load and recovery time."
+  },
+  "annotations": {
+    "veryFocused": "Very focused",
+    "distracted": "Distracted",
+    "flowZone": "Flow zone",
+    "tired": "Tired",
+    "energized": "Energized"
+  },
+  "period": {
+    "Morning": "Morning",
+    "Afternoon": "Afternoon",
+    "Evening": "Evening",
+    "Night": "Night"
+  },
+  "daysShort": {
+    "Mon": "Mon",
+    "Tue": "Tue",
+    "Wed": "Wed",
+    "Thu": "Thu",
+    "Fri": "Fri",
+    "Sat": "Sat",
+    "Sun": "Sun"
   },
   "sessions": {
     "newSession": "New session",

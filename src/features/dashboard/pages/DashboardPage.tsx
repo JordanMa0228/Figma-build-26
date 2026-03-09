@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { useTranslation } from 'react-i18next'
+import { format } from 'date-fns'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { MetricCard } from '../../../components/ui/MetricCard'
 import { Surface } from '../../../components/ui/Surface'
@@ -9,13 +10,16 @@ import { InsightCard } from '../../../components/cards/InsightCard'
 import { SessionListCard } from '../../../components/cards/SessionListCard'
 import { FlowCalendar } from '../../../components/calendar/FlowCalendar'
 import { useDashboardData } from '../hooks'
-import { formatMinutes, formatPercent, formatStr, getStrNarrative } from '../../../lib/utils'
+import { formatPercent, formatStr, getStrNarrativeKey } from '../../../lib/utils'
+import { TaskIconView } from '../../../components/ui/TaskIconView'
+import { getDateLocale } from '../../../lib/date-locale'
 
 export function DashboardPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { data } = useDashboardData()
 
   if (!data) return null
+  const topSessionNote = data.topSession.note.startsWith('sessionNotes.') ? t(data.topSession.note) : data.topSession.note
 
   return (
     <div className="space-y-6">
@@ -43,9 +47,10 @@ export function DashboardPage() {
                 {t('dashboard.bestSession')}
               </div>
               <h3 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-                {data.topSession.taskIcon} {data.topSession.taskLabel}
+                <TaskIconView icon={data.topSession.taskIcon} size={36} className="mr-2 inline-block align-middle text-slate-700" />
+                {t(`tasks.${data.topSession.taskLabel}`)}
               </h3>
-              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">{data.topSession.note}</p>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">{topSessionNote}</p>
             </div>
             <div className="grid grid-cols-2 gap-3 md:min-w-[320px]">
               <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
@@ -62,7 +67,7 @@ export function DashboardPage() {
               </div>
               <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
                 <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.interpretation')}</p>
-                <p className="mt-3 text-base font-medium text-blue-600">{getStrNarrative(data.topSession.avgSTR)}</p>
+                <p className="mt-3 text-base font-medium text-blue-600">{t(getStrNarrativeKey(data.topSession.avgSTR))}</p>
               </div>
             </div>
           </div>
@@ -77,7 +82,13 @@ export function DashboardPage() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="#eef2f7" strokeDasharray="3 3" />
-                <XAxis dataKey="day" tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} />
+                <XAxis
+                  dataKey="day"
+                  tick={{ fill: '#94a3b8', fontSize: 11 }}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => t(`daysShort.${value}`)}
+                />
                 <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} tickLine={false} axisLine={false} />
                 <Tooltip />
                 <Area type="monotone" dataKey="flowMin" stroke="#3b82f6" fill="url(#dashboardFlow)" strokeWidth={2} />
@@ -90,14 +101,14 @@ export function DashboardPage() {
           <MetricCard
             icon="clock"
             label={t('dashboard.lastSession')}
-            value={data.summary.lastSessionDate}
+            value={format(new Date(data.summary.lastSessionDate), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })}
             description={t('dashboard.lastSessionDesc')}
             tone="cyan"
           />
           <MetricCard
             icon="activity"
             label={t('dashboard.flowTime')}
-            value={formatMinutes(data.summary.totalFlowTimeMin)}
+            value={t('common.minutesFormat', { value: data.summary.totalFlowTimeMin })}
             description={t('dashboard.flowTimeDescMetric')}
             tone="flow"
           />
@@ -122,7 +133,7 @@ export function DashboardPage() {
         <MetricCard
           icon="activity"
           label={t('dashboard.weeklyFlow')}
-          value={formatMinutes(data.weeklyStats.weeklyFlowTimeMin)}
+          value={t('common.minutesFormat', { value: data.weeklyStats.weeklyFlowTimeMin })}
           description={t('dashboard.weeklyFlowDesc')}
           tone="flow"
         />
@@ -136,7 +147,7 @@ export function DashboardPage() {
         <MetricCard
           icon="star"
           label={t('dashboard.longestStreak')}
-          value={formatMinutes(data.summary.longestFlowStreakMin)}
+          value={t('common.minutesFormat', { value: data.summary.longestFlowStreakMin })}
           description={t('dashboard.longestStreakDesc')}
           tone="focused"
         />
@@ -170,7 +181,7 @@ export function DashboardPage() {
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('dashboard.autoInsights')}</h3>
           </div>
           {data.insights.map((item) => (
-            <InsightCard key={item.id} icon={item.icon} text={item.text} />
+            <InsightCard key={item.id} icon={item.icon} text={item.text} textKey={item.textKey} />
           ))}
         </div>
       </section>

@@ -46,11 +46,12 @@ export function getToneClasses(tone: AccentTone) {
   return map[tone]
 }
 
-export function getStrNarrative(value: number) {
-  if (value <= 0.7) return 'Deep flow'
-  if (value <= 0.9) return 'High focus'
-  if (value <= 1.1) return 'Neutral pacing'
-  return 'Slower subjective time'
+/** Returns i18n key for STR interpretation (use with t()). */
+export function getStrNarrativeKey(value: number): string {
+  if (value <= 0.7) return 'interpretation.deepFlow'
+  if (value <= 0.9) return 'interpretation.highFocus'
+  if (value <= 1.1) return 'interpretation.neutralPacing'
+  return 'interpretation.slowerSubjectiveTime'
 }
 
 export function getScoreTone(score: number): AccentTone {
