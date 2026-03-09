@@ -62,7 +62,7 @@ export function SessionDetailPage() {
         eyebrow={t('sessions.sessionReport')}
         title={
           <>
-            <TaskIconView icon={session.taskIcon} size={28} className="mr-2 inline-block align-middle text-slate-700" />
+            <TaskIconView icon={session.taskIcon ?? '📋'} size={28} className="mr-2 inline-block align-middle text-slate-700" />
             {t(`tasks.${session.taskLabel}`)} {t('sessions.deepDive')}
           </>
         }

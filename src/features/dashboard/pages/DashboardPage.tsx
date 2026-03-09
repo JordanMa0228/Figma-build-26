@@ -47,7 +47,7 @@ export function DashboardPage() {
                 {t('dashboard.bestSession')}
               </div>
               <h3 className="mt-4 text-4xl font-semibold tracking-tight text-slate-900">
-                <TaskIconView icon={data.topSession.taskIcon} size={36} className="mr-2 inline-block align-middle text-slate-700" />
+                <TaskIconView icon={data.topSession.taskIcon ?? '📋'} size={36} className="mr-2 inline-block align-middle text-slate-700" />
                 {t(`tasks.${data.topSession.taskLabel}`)}
               </h3>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">{topSessionNote}</p>

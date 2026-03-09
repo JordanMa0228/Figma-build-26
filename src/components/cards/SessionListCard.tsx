@@ -21,7 +21,7 @@ export function SessionListCard({ session }: SessionListCardProps) {
         <div className="min-w-0">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 text-2xl">
-              <TaskIconView icon={session.taskIcon} size={28} className="text-slate-700" />
+              <TaskIconView icon={session.taskIcon ?? '📋'} size={28} className="text-slate-700" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
