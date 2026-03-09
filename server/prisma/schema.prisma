@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String
+  password  String
+  timezone  String    @default("UTC")
+  settings  String?   @default("{}")
+  sessions  Session[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Session {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        String
+  durationMin Int
+  avgStr      Float
+  flowRatio   Float
+  taskLabel   String?
+  report      Report?
+  createdAt   DateTime @default(now())
+}
+
+model Report {
+  id            String   @id @default(uuid())
+  sessionId     String   @unique
+  session       Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  flowIntervals String   // JSON string: [{startMin, endMin, state, avgSTR}]
+  strTimeseries String   // JSON string: [{t, str}]
+  quality       String   // JSON string: {eye, eeg, hr}
+  summary       String   // JSON string: {flowTotal, longestStreak, peakStr, ...}
+  createdAt     DateTime @default(now())
+}
