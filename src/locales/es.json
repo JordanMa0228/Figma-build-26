@@ -80,6 +80,7 @@
     "warehouseTitle": "Almacén de sesiones",
     "warehouseDesc": "Vista densa de cada muestra. Filtros, búsqueda y etiquetas.",
     "taskType": "Tipo de tarea",
+    "customTaskPlaceholder": "Ingresa el nombre de la tarea...",
     "date": "Fecha",
     "startTime": "Hora inicio",
     "endTime": "Hora fin",
