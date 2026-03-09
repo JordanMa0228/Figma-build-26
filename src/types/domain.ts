@@ -58,7 +58,9 @@ export interface WeeklyStats {
 export interface InsightItem {
   id: number
   icon: string
-  text: string
+  textKey: string
+  /** Interpolation variables matching the placeholders in the `textKey` translation (e.g. `{{task}}`, `{{percent}}`). */
+  textParams?: Record<string, string | number>
 }
 
 export interface WeeklyFlowDatum {

@@ -321,10 +321,10 @@ export const weeklyStats: WeeklyStats = {
 }
 
 export const insights: InsightItem[] = [
-  { id: 1, text: 'You enter Flow 2.3x more during Coding than Email sessions.', icon: '💡' },
-  { id: 2, text: 'Your STR bottoms out most often between 9 PM and 11 PM.', icon: '🌙' },
-  { id: 3, text: 'Poker sessions show the highest average flow ratio this week.', icon: '🃏' },
-  { id: 4, text: 'Class sessions carry the highest distraction load and recovery time.', icon: '📚' },
+  { id: 1, textKey: 'mock.insight1', icon: '💡' },
+  { id: 2, textKey: 'mock.insight2', icon: '🌙' },
+  { id: 3, textKey: 'mock.insight3', icon: '🃏' },
+  { id: 4, textKey: 'mock.insight4', icon: '📚' },
 ]
 
 export const weeklyFlowData: WeeklyFlowDatum[] = [

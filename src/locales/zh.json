@@ -71,7 +71,13 @@
     "cancel": "取消",
     "loading": "加载中…",
     "close": "关闭",
-    "none": "无"
+    "none": "无",
+    "strNarrative": {
+      "deepFlow": "深度心流",
+      "highFocus": "高度专注",
+      "neutralPacing": "平稳节奏",
+      "slowerTime": "主观时间放缓"
+    }
   },
   "sessions": {
     "newSession": "新建会话",
@@ -151,7 +157,11 @@
     "totalSessionsDesc": "当前前端可用的已追踪样本数。",
     "weeklyFlowDesc": "本周累计高专注分钟数。",
     "weeklySTRDesc": "认知节奏与主观时间的周基线。",
-    "longestStreakDesc": "最近会话中最长连续心流时段。"
+    "longestStreakDesc": "最近会话中最长连续心流时段。",
+    "insightBestTask": "最佳任务：{{task}}，心流占比 {{percent}}%",
+    "insightNoSessions": "暂无会话记录",
+    "insightPeakSTR": "本周峰值 STR：{{value}}",
+    "insightTotalFlow": "本周心流总时长：{{min}} 分钟"
   },
   "settings": {
     "configTitle": "信号与隐私配置",
@@ -219,7 +229,10 @@
     "daypartAnalysis": "时段分析",
     "bestFocusTime": "最佳专注时段",
     "insightFeed": "洞察流",
-    "narrativeTakeaways": "要点摘要"
+    "narrativeTakeaways": "要点摘要",
+    "insightBestTask": "最佳任务类型：{{taskType}}",
+    "insightAvgSTR": "平均 STR：{{value}}",
+    "insightAvgFlowRatio": "平均心流占比：{{percent}}%"
   },
   "flowTimeline": {
     "title": "心流时间线",
@@ -267,5 +280,11 @@
   "authErrors": {
     "invalidCredentials": "邮箱或密码错误",
     "registrationFailed": "注册失败"
+  },
+  "mock": {
+    "insight1": "编程任务中进入心流的频率是邮件任务的 2.3 倍。",
+    "insight2": "STR 最低点通常出现在晚上 9 点到 11 点之间。",
+    "insight3": "本周扑克会话的平均心流占比最高。",
+    "insight4": "课堂会话的分心次数和恢复时间最长。"
   }
 }
