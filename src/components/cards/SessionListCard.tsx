@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { IconfontIcon } from '../ui/IconfontIcon'
-import { format } from 'date-fns'
 import type { SessionRecord } from '../../types/domain'
-import { cn, formatStr, getScoreTone, getStrNarrativeKey, getToneClasses } from '../../lib/utils'
+import { cn, formatStr, getScoreTone, getStrNarrativeKey, getToneClasses, safeDateFormat } from '../../lib/utils'
 import { Surface } from '../ui/Surface'
 import { StatusPill } from '../ui/StatusPill'
 import { TaskIconView } from '../ui/TaskIconView'
@@ -31,7 +30,7 @@ export function SessionListCard({ session }: SessionListCardProps) {
                 </StatusPill>
               </div>
               <p className="mt-1 text-xs text-slate-500 md:text-sm">
-                {format(new Date(session.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {session.startTime}-{session.endTime}
+                {safeDateFormat(session.date, 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {session.startTime}-{session.endTime}
               </p>
               <p className="text-xs text-slate-500 md:text-sm">
                 {t('common.minutesFormat', { value: session.durationMin })}

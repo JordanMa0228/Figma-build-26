@@ -51,7 +51,7 @@ function mapSession(raw: RawSession): SessionRecord {
     id: raw.id,
     taskLabel: (raw.taskLabel || 'Coding') as TaskType,
     taskIcon: TASK_ICONS[raw.taskLabel || 'Coding'] ?? '📋',
-    date: raw.date,
+    date: raw.date || new Date().toISOString().slice(0, 10),
     startTime,
     endTime,
     durationMin: raw.durationMin,

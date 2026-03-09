@@ -3,11 +3,10 @@ import { PageHeader } from '../../../components/ui/PageHeader'
 import { Surface } from '../../../components/ui/Surface'
 import { MetricCard } from '../../../components/ui/MetricCard'
 import { IconfontIcon } from '../../../components/ui/IconfontIcon'
-import { format } from 'date-fns'
 import { FlowTimelineChart } from '../../../components/charts/FlowTimelineChart'
 import { StrLineChart } from '../../../components/charts/StrLineChart'
 import { useUiStore } from '../../../store/ui-store'
-import { getDeltaLabel } from '../../../lib/utils'
+import { getDeltaLabel, safeDateFormat } from '../../../lib/utils'
 import type { SessionRecord } from '../../../types/domain'
 import { useSessionsData } from '../../sessions/hooks'
 import { TaskIconView } from '../../../components/ui/TaskIconView'
@@ -28,7 +27,7 @@ function CompareColumn({
   const session = sessions.find((item) => item.id === value)
 
   const displayNote = session ? (session.note.startsWith('sessionNotes.') ? t(session.note) : session.note) : ''
-  const displayDate = session ? format(new Date(session.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) }) : ''
+  const displayDate = session ? safeDateFormat(session.date, 'MMM d, yyyy', { locale: getDateLocale(i18n.language) }) : ''
 
   return (
     <div className="space-y-4">
@@ -42,7 +41,7 @@ function CompareColumn({
           <option value="" disabled>{t('compare.selectSession')}</option>
           {sessions.map((item) => (
             <option key={item.id} value={item.id}>
-              {t(`tasks.${item.taskLabel}`)} · {format(new Date(item.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {t('common.minutesFormat', { value: item.durationMin })}
+              {t(`tasks.${item.taskLabel}`)} · {safeDateFormat(item.date, 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {t('common.minutesFormat', { value: item.durationMin })}
             </option>
           ))}
         </select>
