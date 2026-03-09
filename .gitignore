@@ -3,9 +3,3 @@ dist
 dist-ssr
 *.local
 .DS_Store
-
-# Server
-server/.env
-server/node_modules
-server/dist
-server/prisma/*.db
