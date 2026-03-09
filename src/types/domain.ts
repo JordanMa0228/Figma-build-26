@@ -58,7 +58,8 @@ export interface WeeklyStats {
 export interface InsightItem {
   id: number
   icon: string
-  text: string
+  textKey: string
+  textParams?: Record<string, string | number>
 }
 
 export interface WeeklyFlowDatum {

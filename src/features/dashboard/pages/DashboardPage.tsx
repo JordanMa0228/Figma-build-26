@@ -9,7 +9,7 @@ import { InsightCard } from '../../../components/cards/InsightCard'
 import { SessionListCard } from '../../../components/cards/SessionListCard'
 import { FlowCalendar } from '../../../components/calendar/FlowCalendar'
 import { useDashboardData } from '../hooks'
-import { formatMinutes, formatPercent, formatStr, getStrNarrative } from '../../../lib/utils'
+import { formatMinutes, formatPercent, formatStr, getStrNarrativeKey } from '../../../lib/utils'
 import { useAuthStore } from '../../../store/auth-store'
 
 export function DashboardPage() {
@@ -117,7 +117,7 @@ export function DashboardPage() {
                   </div>
                   <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{t('dashboard.interpretation')}</p>
-                    <p className="mt-3 text-base font-medium text-blue-600">{getStrNarrative(data.topSession.avgSTR)}</p>
+                    <p className="mt-3 text-base font-medium text-blue-600">{t(getStrNarrativeKey(data.topSession.avgSTR))}</p>
                   </div>
                 </div>
               </div>
@@ -240,7 +240,7 @@ export function DashboardPage() {
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('dashboard.autoInsights')}</h3>
           </div>
           {data.insights.map((item) => (
-            <InsightCard key={item.id} icon={item.icon} text={item.text} />
+            <InsightCard key={item.id} icon={item.icon} text={t(item.textKey, item.textParams)} />
           ))}
         </div>
       </section>

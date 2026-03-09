@@ -71,7 +71,13 @@
     "cancel": "Cancelar",
     "loading": "Cargando…",
     "close": "Cerrar",
-    "none": "Ninguno"
+    "none": "Ninguno",
+    "strNarrative": {
+      "deepFlow": "Flujo profundo",
+      "highFocus": "Alta concentración",
+      "neutralPacing": "Ritmo neutro",
+      "slowerTime": "Tiempo subjetivo más lento"
+    }
   },
   "sessions": {
     "newSession": "Nueva sesión",
@@ -151,7 +157,11 @@
     "totalSessionsDesc": "Muestras rastreadas actualmente disponibles en el frontend.",
     "weeklyFlowDesc": "Minutos de alto enfoque acumulados en la semana actual.",
     "weeklySTRDesc": "Línea base semanal de ritmo cognitivo y tiempo subjetivo.",
-    "longestStreakDesc": "Mayor bloque de flujo ininterrumpido en la última sesión."
+    "longestStreakDesc": "Mayor bloque de flujo ininterrumpido en la última sesión.",
+    "insightBestTask": "Mejor tarea: {{task}} con {{percent}}% de flujo",
+    "insightNoSessions": "Sin sesiones aún",
+    "insightPeakSTR": "STR pico esta semana: {{value}}",
+    "insightTotalFlow": "Tiempo total de flujo esta semana: {{min}} min"
   },
   "settings": {
     "configTitle": "Configuración de señal y privacidad",
@@ -219,7 +229,10 @@
     "daypartAnalysis": "Análisis por franja horaria",
     "bestFocusTime": "Mejor momento de enfoque del día",
     "insightFeed": "Hilo de insights",
-    "narrativeTakeaways": "Conclusiones narrativas"
+    "narrativeTakeaways": "Conclusiones narrativas",
+    "insightBestTask": "Mejor tipo de tarea: {{taskType}}",
+    "insightAvgSTR": "STR promedio: {{value}}",
+    "insightAvgFlowRatio": "Ratio de flujo promedio: {{percent}}%"
   },
   "flowTimeline": {
     "title": "Línea temporal de flujo",
