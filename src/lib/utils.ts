@@ -46,18 +46,12 @@ export function getToneClasses(tone: AccentTone) {
   return map[tone]
 }
 
-export function getStrNarrative(value: number): string {
-  if (value <= 0.7) return 'strNarrative.deepFlow'
-  if (value <= 0.9) return 'strNarrative.highFocus'
-  if (value <= 1.1) return 'strNarrative.neutralPacing'
-  return 'strNarrative.slowerSubjectiveTime'
-}
-
+/** Returns i18n key for STR interpretation (use with t()). */
 export function getStrNarrativeKey(value: number): string {
-  if (value <= 0.7) return 'strNarrative.deepFlow'
-  if (value <= 0.9) return 'strNarrative.highFocus'
-  if (value <= 1.1) return 'strNarrative.neutralPacing'
-  return 'strNarrative.slowerTime'
+  if (value <= 0.7) return 'interpretation.deepFlow'
+  if (value <= 0.9) return 'interpretation.highFocus'
+  if (value <= 1.1) return 'interpretation.neutralPacing'
+  return 'interpretation.slowerSubjectiveTime'
 }
 
 export function getScoreTone(score: number): AccentTone {
@@ -72,4 +66,3 @@ export function getDeltaLabel(left: number, right: number, unit = '') {
   const prefix = delta > 0 ? '+' : ''
   return `${prefix}${delta.toFixed(2)}${unit}`
 }
-

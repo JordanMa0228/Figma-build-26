@@ -20,18 +20,18 @@ export function SessionListCard({ session }: SessionListCardProps) {
       <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
         <div className="min-w-0">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50">
-              <TaskIconView icon={session.taskIcon} size={28} />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 text-2xl">
+              <TaskIconView icon={session.taskIcon} size={28} className="text-slate-700" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h3 className="truncate text-lg font-semibold text-slate-900">{session.taskLabel}</h3>
+                <h3 className="truncate text-lg font-semibold text-slate-900">{t(`tasks.${session.taskLabel}`)}</h3>
                 <StatusPill tone={session.flowPercent >= 60 ? 'flow' : session.avgSTR <= 0.9 ? 'focused' : 'neutral'}>
                   {t('sessions.flowPercentFormat', { percent: session.flowPercent })}
                 </StatusPill>
               </div>
               <p className="mt-1 text-sm text-slate-500">
-                {format(new Date(session.date), 'PPP', { locale: getDateLocale(i18n.language) })} · {session.startTime} to {session.endTime} · {session.durationMin} min
+                {format(new Date(session.date), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })} · {session.startTime}–{session.endTime} · {t('common.minutesFormat', { value: session.durationMin })}
               </p>
             </div>
           </div>
@@ -44,7 +44,7 @@ export function SessionListCard({ session }: SessionListCardProps) {
               {t('sessions.avgSTRShort')} {formatStr(session.avgSTR)}
             </span>
             <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
-              {t('sessions.longestStreakShort')} {session.longestFlowStreakMin}m
+              {t('sessions.longestStreakShort')} {session.longestFlowStreakMin}{t('common.minAbbr')}
             </span>
           </div>
         </div>
@@ -74,4 +74,3 @@ export function SessionListCard({ session }: SessionListCardProps) {
     </Surface>
   )
 }
-
