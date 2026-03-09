@@ -80,6 +80,7 @@
     "warehouseTitle": "可搜索会话库",
     "warehouseDesc": "更密集的样本视图，支持筛选、搜索与标签。",
     "taskType": "任务类型",
+    "customTaskPlaceholder": "输入任务名称...",
     "date": "日期",
     "startTime": "开始时间",
     "endTime": "结束时间",

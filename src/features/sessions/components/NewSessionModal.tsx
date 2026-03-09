@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
@@ -28,11 +28,13 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<NewSessionSchema>({
     resolver: zodResolver(newSessionSchema),
     defaultValues: {
       taskLabel: 'Coding',
+      customTaskLabel: '',
       date: new Date().toISOString().slice(0, 10),
       startTime: '09:00',
       endTime: '10:00',
@@ -40,14 +42,19 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
     },
   })
 
+  const watchedTaskLabel = useWatch({ control, name: 'taskLabel' })
+  const isCustom = watchedTaskLabel === 'Custom'
+
   const onSubmit = async (data: NewSessionSchema) => {
+    const resolvedTaskLabel =
+      data.taskLabel === 'Custom' ? (data.customTaskLabel?.trim() || 'Custom') : data.taskLabel
     try {
       const startMin = parseTimeToMinutes(data.startTime)
       const endMin = parseTimeToMinutes(data.endTime)
       const durationMin = Math.max(0, endMin - startMin)
 
       const result = await createSession({
-        taskLabel: data.taskLabel,
+        taskLabel: resolvedTaskLabel,
         date: data.date,
         startTime: data.startTime,
         endTime: data.endTime,
@@ -77,7 +84,7 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
       onClose()
     } catch (error) {
       console.error('[NewSessionModal] API save failed, falling back to local store:', error)
-      const session = buildSessionFromForm(data)
+      const session = buildSessionFromForm(data, resolvedTaskLabel)
       addSession(session)
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['sessions'] }),
@@ -172,6 +179,17 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
               ))}
             </select>
             {errors.taskLabel && <p className="mt-1 text-sm text-red-600">{errors.taskLabel.message}</p>}
+            {isCustom && (
+              <input
+                type="text"
+                placeholder={t('sessions.customTaskPlaceholder', 'Enter task name...')}
+                className="mt-3 h-[60px] w-full rounded-[14px] border border-slate-200 bg-white px-4 text-[18px] font-semibold text-slate-900 placeholder:text-slate-400 focus:border-2 focus:border-blue-500 focus:outline-none"
+                {...register('customTaskLabel')}
+              />
+            )}
+            {errors.customTaskLabel && (
+              <p className="mt-1 text-sm text-red-600">{errors.customTaskLabel.message}</p>
+            )}
           </div>
 
           {/* Row 4: Description (note) */}

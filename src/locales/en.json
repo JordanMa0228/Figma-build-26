@@ -80,6 +80,7 @@
     "warehouseTitle": "Searchable session warehouse",
     "warehouseDesc": "A more data-dense view of every sample. Filters, search, and operational labels.",
     "taskType": "Task type",
+    "customTaskPlaceholder": "Enter task name...",
     "date": "Date",
     "startTime": "Start time",
     "endTime": "End time",
