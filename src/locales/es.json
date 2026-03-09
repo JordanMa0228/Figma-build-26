@@ -280,5 +280,11 @@
   "authErrors": {
     "invalidCredentials": "Correo o contraseña incorrectos",
     "registrationFailed": "Error al registrarse"
+  },
+  "mock": {
+    "insight1": "Entras en Flujo 2,3 veces más durante sesiones de Programación que de Email.",
+    "insight2": "Tu STR toca mínimos con más frecuencia entre las 21:00 y las 23:00.",
+    "insight3": "Las sesiones de Póker muestran el mayor ratio de flujo promedio esta semana.",
+    "insight4": "Las sesiones de Clase tienen la mayor carga de distracciones y tiempo de recuperación."
   }
 }

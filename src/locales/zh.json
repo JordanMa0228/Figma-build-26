@@ -280,5 +280,11 @@
   "authErrors": {
     "invalidCredentials": "邮箱或密码错误",
     "registrationFailed": "注册失败"
+  },
+  "mock": {
+    "insight1": "编程任务中进入心流的频率是邮件任务的 2.3 倍。",
+    "insight2": "STR 最低点通常出现在晚上 9 点到 11 点之间。",
+    "insight3": "本周扑克会话的平均心流占比最高。",
+    "insight4": "课堂会话的分心次数和恢复时间最长。"
   }
 }

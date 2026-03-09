@@ -59,6 +59,7 @@ export interface InsightItem {
   id: number
   icon: string
   textKey: string
+  /** Interpolation variables matching the placeholders in the `textKey` translation (e.g. `{{task}}`, `{{percent}}`). */
   textParams?: Record<string, string | number>
 }
 
