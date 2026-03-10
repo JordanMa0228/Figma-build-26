@@ -72,8 +72,8 @@
     "loading": "Loading...",
     "close": "Close",
     "none": "None",
-    "minutesFormat": "{{value}} minutes",
-    "min": "minutes",
+    "minutesFormat": "{{value}} min",
+    "min": "min",
     "minAbbr": "m",
     "all": "All"
   },
@@ -101,7 +101,14 @@
     "flow2x": "You enter Flow 2.3x more during Coding than Email sessions.",
     "strBottoms": "Your STR bottoms out most often between 9 PM and 11 PM.",
     "pokerHighest": "Poker sessions show the highest average flow ratio this week.",
-    "classDistraction": "Class sessions carry the highest distraction load and recovery time."
+    "classDistraction": "Class sessions carry the highest distraction load and recovery time.",
+    "bestTask": "Best task: {{taskLabel}} with {{flowPercent}}% flow",
+    "noSessions": "No sessions yet",
+    "peakSTR": "Peak STR this week: {{value}}",
+    "weeklyFlowTime": "Total flow time this week: {{value}} min",
+    "bestTaskType": "Best task type: {{taskType}}",
+    "avgSTR": "Average STR: {{value}}",
+    "avgFlowRatio": "Average flow ratio: {{value}}%"
   },
   "annotations": {
     "veryFocused": "Very focused",
@@ -173,7 +180,9 @@
     "distractions": "Distractions",
     "detail": "Detail",
     "openReport": "Open report",
-    "flowPercentFormat": "{{percent}}% flow"
+    "flowPercentFormat": "{{percent}}% flow",
+    "deleteSession": "Delete",
+    "confirmDelete": "Are you sure you want to delete this session?"
   },
   "dashboard": {
     "overview": "Overview",
@@ -252,7 +261,9 @@
     "qualityDelta": "Quality delta",
     "qualityDeltaDesc": "Difference in sensor integrity across the selected pair.",
     "sessionA": "Session A",
-    "sessionB": "Session B"
+    "sessionB": "Session B",
+    "selectSession": "Select a session…",
+    "selectSessionPrompt": "Select a session to begin"
   },
   "trends": {
     "eyebrow": "Analytics",

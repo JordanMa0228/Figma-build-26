@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { useTranslation } from 'react-i18next'
-import { format } from 'date-fns'
 import { PageHeader } from '../../../components/ui/PageHeader'
 import { MetricCard } from '../../../components/ui/MetricCard'
 import { Surface } from '../../../components/ui/Surface'
@@ -10,13 +9,15 @@ import { InsightCard } from '../../../components/cards/InsightCard'
 import { SessionListCard } from '../../../components/cards/SessionListCard'
 import { FlowCalendar } from '../../../components/calendar/FlowCalendar'
 import { useDashboardData } from '../hooks'
-import { formatPercent, formatStr, getStrNarrativeKey } from '../../../lib/utils'
+import { formatPercent, formatStr, getStrNarrativeKey, safeDateFormat } from '../../../lib/utils'
 import { TaskIconView } from '../../../components/ui/TaskIconView'
 import { getDateLocale } from '../../../lib/date-locale'
+import { useDeleteSession } from '../../sessions/hooks'
 
 export function DashboardPage() {
   const { t, i18n } = useTranslation()
   const { data } = useDashboardData()
+  const { mutate: deleteSession } = useDeleteSession()
 
   if (!data) return null
   const topSessionNote = data.topSession.note.startsWith('sessionNotes.') ? t(data.topSession.note) : data.topSession.note
@@ -107,7 +108,7 @@ export function DashboardPage() {
           <MetricCard
             icon="clock"
             label={t('dashboard.lastSession')}
-            value={format(new Date(data.summary.lastSessionDate), 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })}
+            value={safeDateFormat(data.summary.lastSessionDate, 'MMM d, yyyy', { locale: getDateLocale(i18n.language) })}
             description={t('dashboard.lastSessionDesc')}
             tone="cyan"
           />
@@ -176,7 +177,7 @@ export function DashboardPage() {
           </div>
           <div className="space-y-4">
             {data.recentSessions.map((session) => (
-              <SessionListCard key={session.id} session={session} />
+              <SessionListCard key={session.id} session={session} onDelete={deleteSession} />
             ))}
           </div>
         </div>
@@ -187,7 +188,7 @@ export function DashboardPage() {
             <h3 className="mt-2 text-xl font-semibold text-slate-900">{t('dashboard.autoInsights')}</h3>
           </div>
           {data.insights.map((item) => (
-            <InsightCard key={item.id} icon={item.icon} text={item.text} textKey={item.textKey} />
+            <InsightCard key={item.id} icon={item.icon} text={item.text} textKey={item.textKey} params={item.params} />
           ))}
         </div>
       </section>

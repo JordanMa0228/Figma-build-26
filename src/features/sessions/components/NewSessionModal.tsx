@@ -8,6 +8,7 @@ import { buildSessionFromForm } from '../buildSessionFromForm'
 import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
 import { track } from '../../../lib/tracking'
 import { createSession } from '../api'
+import { generateSessionStats } from '../generateSessionStats'
 
 function parseTimeToMinutes(time: string): number {
   const [h, m] = time.split(':').map(Number)
@@ -52,6 +53,7 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
       const startMin = parseTimeToMinutes(data.startTime)
       const endMin = parseTimeToMinutes(data.endTime)
       const durationMin = Math.max(0, endMin - startMin)
+      const stats = generateSessionStats(durationMin)
 
       const result = await createSession({
         taskLabel: resolvedTaskLabel,
@@ -59,20 +61,13 @@ export function NewSessionModal({ open, onClose }: NewSessionModalProps) {
         startTime: data.startTime,
         endTime: data.endTime,
         durationMin,
-        avgStr: 0.7,
-        flowRatio: 0.5,
-        peakStr: 0.5,
-        longestFlowStreakMin: Math.floor(durationMin / 3),
-        flowIntervals: [
-          { startMin: 0, endMin: Math.floor(durationMin / 3), state: 'Neutral', avgSTR: 0.95 },
-          { startMin: Math.floor(durationMin / 3), endMin: durationMin, state: 'Flow', avgSTR: 0.55 },
-        ],
-        strTimeseries: [
-          { t: 0, str: 1.0 },
-          { t: Math.floor(durationMin / 2), str: 0.55 },
-          { t: durationMin, str: 0.98 },
-        ],
-        quality: { eye: 90, eeg: 88, hr: 92 },
+        avgStr: stats.avgStr,
+        flowRatio: stats.flowRatio,
+        peakStr: stats.peakStr,
+        longestFlowStreakMin: stats.longestFlowStreakMin,
+        flowIntervals: stats.flowIntervals,
+        strTimeseries: stats.strTimeseries,
+        quality: stats.quality,
       })
 
       await Promise.all([

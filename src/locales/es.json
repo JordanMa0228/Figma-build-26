@@ -72,8 +72,8 @@
     "loading": "Cargando…",
     "close": "Cerrar",
     "none": "Ninguno",
-    "minutesFormat": "{{value}} minutos",
-    "min": "minutos",
+    "minutesFormat": "{{value}} min",
+    "min": "min",
     "minAbbr": "m",
     "all": "Todos"
   },
@@ -101,7 +101,14 @@
     "flow2x": "Entras en flujo 2,3 veces más en sesiones de análisis que de correo.",
     "strBottoms": "Tu STR toca fondo con más frecuencia entre las 21:00 y las 23:00.",
     "pokerHighest": "Las sesiones de póquer tienen el mayor ratio de flujo esta semana.",
-    "classDistraction": "Las sesiones de clase tienen la mayor carga de distracción y tiempo de recuperación."
+    "classDistraction": "Las sesiones de clase tienen la mayor carga de distracción y tiempo de recuperación.",
+    "bestTask": "Mejor tarea: {{taskLabel}} con {{flowPercent}}% de flujo",
+    "noSessions": "Sin sesiones aún",
+    "peakSTR": "STR pico esta semana: {{value}}",
+    "weeklyFlowTime": "Tiempo de flujo total esta semana: {{value}} min",
+    "bestTaskType": "Mejor tipo de tarea: {{taskType}}",
+    "avgSTR": "STR medio: {{value}}",
+    "avgFlowRatio": "Ratio de flujo medio: {{value}}%"
   },
   "annotations": {
     "veryFocused": "Muy concentrado",
@@ -173,7 +180,9 @@
     "distractions": "Distracciones",
     "detail": "Detalle",
     "openReport": "Abrir informe",
-    "flowPercentFormat": "{{percent}}% flujo"
+    "flowPercentFormat": "{{percent}}% flujo",
+    "deleteSession": "Eliminar",
+    "confirmDelete": "¿Estás seguro de que quieres eliminar esta sesión?"
   },
   "dashboard": {
     "overview": "Resumen",
@@ -252,7 +261,9 @@
     "qualityDelta": "Delta de calidad",
     "qualityDeltaDesc": "Diferencia de integridad de sensores entre el par seleccionado.",
     "sessionA": "Sesión A",
-    "sessionB": "Sesión B"
+    "sessionB": "Sesión B",
+    "selectSession": "Selecciona una sesión…",
+    "selectSessionPrompt": "Selecciona una sesión para comenzar"
   },
   "trends": {
     "eyebrow": "Analíticas",

@@ -71,7 +71,11 @@
     "cancel": "取消",
     "loading": "加载中…",
     "close": "关闭",
-    "none": "无"
+    "none": "无",
+    "minutesFormat": "{{value}} min",
+    "min": "min",
+    "minAbbr": "m",
+    "all": "全部"
   },
   "sessions": {
     "newSession": "新建会话",
@@ -122,7 +126,9 @@
     "distractions": "分心",
     "detail": "详情",
     "openReport": "打开报告",
-    "flowPercentFormat": "{{percent}}% 心流"
+    "flowPercentFormat": "{{percent}}% 心流",
+    "deleteSession": "删除",
+    "confirmDelete": "确定要删除这条会话记录吗？"
   },
   "dashboard": {
     "overview": "概览",
@@ -201,7 +207,9 @@
     "qualityDelta": "质量差值",
     "qualityDeltaDesc": "所选会话对的传感器完整性之差。",
     "sessionA": "会话 A",
-    "sessionB": "会话 B"
+    "sessionB": "会话 B",
+    "selectSession": "选择会话…",
+    "selectSessionPrompt": "选择一个会话以开始"
   },
   "trends": {
     "eyebrow": "分析",
@@ -263,6 +271,15 @@
   "sidebar": {
     "quickStats": "快捷统计",
     "sessionsThisWeek": "本周会话"
+  },
+  "insights": {
+    "bestTask": "最佳任务：{{taskLabel}}，心流占比 {{flowPercent}}%",
+    "noSessions": "暂无会话记录",
+    "peakSTR": "本周峰值 STR：{{value}}",
+    "weeklyFlowTime": "本周总心流时间：{{value}} 分钟",
+    "bestTaskType": "最佳任务类型：{{taskType}}",
+    "avgSTR": "平均 STR：{{value}}",
+    "avgFlowRatio": "平均心流占比：{{value}}%"
   },
   "authErrors": {
     "invalidCredentials": "邮箱或密码错误",

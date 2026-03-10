@@ -47,22 +47,26 @@ function mapSession(raw: RawSession): SessionRecord {
     } catch { /* ignore */ }
   }
 
+  const qualityScore = dataQuality.eye && dataQuality.eeg && dataQuality.hr
+    ? Math.round((dataQuality.eye + dataQuality.eeg + dataQuality.hr) / 3)
+    : 0
+
   return {
     id: raw.id,
     taskLabel: (raw.taskLabel || 'Coding') as TaskType,
     taskIcon: TASK_ICONS[raw.taskLabel || 'Coding'] ?? '📋',
-    date: raw.date,
+    date: raw.date || new Date().toISOString().slice(0, 10),
     startTime,
     endTime,
     durationMin: raw.durationMin,
     avgSTR: raw.avgStr,
     peakSTR,
-    flowPercent: raw.flowRatio * 100,
+    flowPercent: Math.round(raw.flowRatio * 100),
     longestFlowStreakMin,
     dataQuality,
     flowTimeline,
     strTimeseries,
-    qualityScore: 0,
+    qualityScore,
     distractionEvents: 0,
     note: '',
   }
