@@ -12,10 +12,12 @@ import { useDashboardData } from '../hooks'
 import { formatPercent, formatStr, getStrNarrativeKey, safeDateFormat } from '../../../lib/utils'
 import { TaskIconView } from '../../../components/ui/TaskIconView'
 import { getDateLocale } from '../../../lib/date-locale'
+import { useDeleteSession } from '../../sessions/hooks'
 
 export function DashboardPage() {
   const { t, i18n } = useTranslation()
   const { data } = useDashboardData()
+  const { mutate: deleteSession } = useDeleteSession()
 
   if (!data) return null
   const topSessionNote = data.topSession.note.startsWith('sessionNotes.') ? t(data.topSession.note) : data.topSession.note
@@ -175,7 +177,7 @@ export function DashboardPage() {
           </div>
           <div className="space-y-4">
             {data.recentSessions.map((session) => (
-              <SessionListCard key={session.id} session={session} />
+              <SessionListCard key={session.id} session={session} onDelete={deleteSession} />
             ))}
           </div>
         </div>

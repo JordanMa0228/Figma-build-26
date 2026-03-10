@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Trash2 } from 'lucide-react'
 import { IconfontIcon } from '../ui/IconfontIcon'
 import type { SessionRecord } from '../../types/domain'
 import { cn, formatStr, getScoreTone, getStrNarrativeKey, getToneClasses, safeDateFormat } from '../../lib/utils'
@@ -10,9 +11,10 @@ import { getDateLocale } from '../../lib/date-locale'
 
 interface SessionListCardProps {
   session: SessionRecord
+  onDelete?: (id: string) => void
 }
 
-export function SessionListCard({ session }: SessionListCardProps) {
+export function SessionListCard({ session, onDelete }: SessionListCardProps) {
   const { t, i18n } = useTranslation()
   return (
     <Surface className="p-5 transition-transform duration-200 hover:-translate-y-0.5">
@@ -51,28 +53,44 @@ export function SessionListCard({ session }: SessionListCardProps) {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-3 xl:w-[34rem]">
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-            <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('sessions.state')}</p>
-            <p className="mt-2 text-sm font-semibold leading-snug text-slate-900">
-              {t(getStrNarrativeKey(session.avgSTR))}
-            </p>
-          </div>
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-            <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('sessions.distractions')}</p>
-            <p className="mt-2 text-lg font-semibold text-slate-900">{session.distractionEvents}</p>
-          </div>
-          <Link
-            to={`/sessions/${session.id}`}
-            className="flex items-start justify-between rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-700 transition-colors hover:bg-blue-100"
-          >
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.08em] text-blue-600">{t('sessions.detail')}</p>
-              <p className="mt-1 text-sm font-semibold">{t('sessions.openReport')}</p>
+        <div className="flex items-start gap-2">
+          <div className="grid gap-4 sm:grid-cols-3 xl:w-[34rem]">
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('sessions.state')}</p>
+              <p className="mt-2 text-sm font-semibold leading-snug text-slate-900">
+                {t(getStrNarrativeKey(session.avgSTR))}
+              </p>
             </div>
-            <IconfontIcon name="star" size={18} className="text-blue-700" />
-            <IconfontIcon name="arrow-right" size={18} className="text-blue-700" />
-          </Link>
+            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs uppercase tracking-[0.08em] text-slate-500">{t('sessions.distractions')}</p>
+              <p className="mt-2 text-lg font-semibold text-slate-900">{session.distractionEvents}</p>
+            </div>
+            <Link
+              to={`/sessions/${session.id}`}
+              className="flex items-start justify-between rounded-xl border border-blue-200 bg-blue-50 p-4 text-blue-700 transition-colors hover:bg-blue-100"
+            >
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.08em] text-blue-600">{t('sessions.detail')}</p>
+                <p className="mt-1 text-sm font-semibold">{t('sessions.openReport')}</p>
+              </div>
+              <IconfontIcon name="star" size={18} className="text-blue-700" />
+              <IconfontIcon name="arrow-right" size={18} className="text-blue-700" />
+            </Link>
+          </div>
+          {onDelete && (
+            <button
+              type="button"
+              aria-label={t('sessions.deleteSession', 'Delete')}
+              onClick={() => {
+                if (window.confirm(t('sessions.confirmDelete', 'Are you sure you want to delete this session?'))) {
+                  onDelete(session.id)
+                }
+              }}
+              className="mt-1 rounded-lg p-2 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
         </div>
       </div>
     </Surface>

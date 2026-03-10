@@ -13,6 +13,8 @@ import { useUiStore } from '../../../store/ui-store'
 import { useCreatedSessionsStore } from '../../../store/created-sessions-store'
 import { useSessionsData } from '../hooks'
 
+import { useDeleteSession } from '../hooks'
+
 export function SessionsPage() {
   const { t, i18n } = useTranslation()
   const [newSessionOpen, setNewSessionOpen] = useState(false)
@@ -26,6 +28,7 @@ export function SessionsPage() {
   const sessionSearch = useUiStore((state) => state.sessionSearch)
   const setSessionFilter = useUiStore((state) => state.setSessionFilter)
   const setSessionSearch = useUiStore((state) => state.setSessionSearch)
+  const { mutate: deleteSession } = useDeleteSession()
 
   const filteredSessions = useMemo(() => {
     return sessions.filter((session) => {
@@ -122,7 +125,7 @@ export function SessionsPage() {
 
       <div className="space-y-4">
         {filteredSessions.map((session) => (
-          <SessionListCard key={session.id} session={session} />
+          <SessionListCard key={session.id} session={session} onDelete={deleteSession} />
         ))}
         {!filteredSessions.length ? (
           <Surface className="p-12 text-center">

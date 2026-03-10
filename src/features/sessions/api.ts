@@ -61,7 +61,7 @@ function mapSession(raw: RawSession): SessionRecord {
     durationMin: raw.durationMin,
     avgSTR: raw.avgStr,
     peakSTR,
-    flowPercent: raw.flowRatio * 100,
+    flowPercent: Math.round(raw.flowRatio * 100),
     longestFlowStreakMin,
     dataQuality,
     flowTimeline,
