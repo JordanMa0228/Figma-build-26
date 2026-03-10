@@ -72,8 +72,8 @@
     "loading": "Cargando…",
     "close": "Cerrar",
     "none": "Ninguno",
-    "minutesFormat": "{{value}} minutos",
-    "min": "minutos",
+    "minutesFormat": "{{value}} min",
+    "min": "min",
     "minAbbr": "m",
     "all": "Todos"
   },
@@ -180,7 +180,9 @@
     "distractions": "Distracciones",
     "detail": "Detalle",
     "openReport": "Abrir informe",
-    "flowPercentFormat": "{{percent}}% flujo"
+    "flowPercentFormat": "{{percent}}% flujo",
+    "deleteSession": "Eliminar",
+    "confirmDelete": "¿Estás seguro de que quieres eliminar esta sesión?"
   },
   "dashboard": {
     "overview": "Resumen",

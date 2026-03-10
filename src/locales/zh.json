@@ -71,7 +71,11 @@
     "cancel": "取消",
     "loading": "加载中…",
     "close": "关闭",
-    "none": "无"
+    "none": "无",
+    "minutesFormat": "{{value}} min",
+    "min": "min",
+    "minAbbr": "m",
+    "all": "全部"
   },
   "sessions": {
     "newSession": "新建会话",
@@ -122,7 +126,9 @@
     "distractions": "分心",
     "detail": "详情",
     "openReport": "打开报告",
-    "flowPercentFormat": "{{percent}}% 心流"
+    "flowPercentFormat": "{{percent}}% 心流",
+    "deleteSession": "删除",
+    "confirmDelete": "确定要删除这条会话记录吗？"
   },
   "dashboard": {
     "overview": "概览",
