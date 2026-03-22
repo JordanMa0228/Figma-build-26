@@ -263,7 +263,9 @@
     "sessionA": "Sesión A",
     "sessionB": "Sesión B",
     "selectSession": "Selecciona una sesión…",
-    "selectSessionPrompt": "Selecciona una sesión para comenzar"
+    "selectSessionPrompt": "Selecciona una sesión para comenzar",
+    "noSessions": "No hay sesiones disponibles.",
+    "noSessionsHint": "Crea tu primera sesión para comenzar a comparar."
   },
   "trends": {
     "eyebrow": "Analíticas",
